@@ -35,3 +35,10 @@ Developers: Keith Bui, Patton Tang
 - Roles: project planning, development, documentation, and implementation
 - **Technologies**: React, Flask, Github & Git (Version Control)
 - **Language(s)**: Python, JavaScript
+
+### Github Commit Legend:
+📄 Documentation <br>
+✨ New Feature <br>
+🦄 Code Refactoring <br>
+🔨 Build & Deployment <br>
+🐞 Bugfix <br>
