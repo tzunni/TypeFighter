@@ -10,32 +10,46 @@ A web application that measures and ranks users by their typing speed across the
 Supported Versions:
 - Windows 11
 
-## Dependencies
+## Install Dependencies <br>
 - `Flask`: 3.0.0
 - `React`: 19.0.0
 
-Install Dependencies
-```sh
-python -m venv venv # Create virtual environment
-. .venv/bin/activate # Bash Command
+1. Create Virtual Environment
+```powershell
+python -m venv venv
+```
+
+2a. Activate Virtual Environment
+
+| System  | Command                   |
+|---------|---------------------------|
+| Windows | venv/Scripts/Activate.ps1 |
+| Linux   | . .venv/bin/activate      |
+ 
+3. Install Flask
+```powershell
 pip install Flask
 ```
 
-Run Project (Front End)
-```sh
-npm start
-```
+4. Install Node.js for React
 
-Run Project (Back End)
-```sh
+## Run Project
+1. Activate Virtual Environment
+
+| System  | Command                   |
+|---------|---------------------------|
+| Windows | venv/Scripts/Activate.ps1 |
+| Linux   | . .venv/bin/activate      |
+
+2. Create back-end instance
+```powershell
 npm run start-api
 ```
 
-### Metadata
-Developers: Keith Bui, Patton Tang
-- Roles: project planning, development, documentation, and implementation
-- **Technologies**: React, Flask, Github & Git (Version Control)
-- **Language(s)**: Python, JavaScript
+3. Create browser instance
+```powershell
+npm start
+```
 
 ### Github Commit Legend:
 📄 Documentation <br>
@@ -43,3 +57,9 @@ Developers: Keith Bui, Patton Tang
 🦄 Code Refactoring <br>
 🔨 Build & Deployment <br>
 🐞 Bugfix <br>
+
+### Metadata
+Developers: Keith Bui, Patton Tang
+- Roles: project planning, development, documentation, and implementation
+- **Technologies**: React, Flask, Github & Git (Version Control)
+- **Language(s)**: Python, JavaScript

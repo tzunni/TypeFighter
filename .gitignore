@@ -19,7 +19,7 @@
 .env.test.local
 .env.production.local
 
-# PyCharm IDE specific local files
+# PyCharm IDE specific local files (Windows)
 /.idea/.gitignore
 /.idea/misc.xml
 /.idea/modules.xml
@@ -27,3 +27,4 @@
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/TypeFighter.iml
 /.idea/vcs.xml
+/venv
