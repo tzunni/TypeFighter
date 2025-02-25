@@ -11,12 +11,13 @@ Supported Versions:
 - Windows 11
 
 ## Dependencies
-- `Flask`: 3.0.version_number
-- `React`: version_number
+- `Flask`: 3.0.0
+- `React`: 19.0.0
 
 Install Dependencies
 ```sh
-python -m venv venv # create virtual environment
+python -m venv venv # Create virtual environment
+. .venv/bin/activate # Bash Command
 pip install Flask
 ```
 
