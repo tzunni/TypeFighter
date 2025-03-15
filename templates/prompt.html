@@ -8,8 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <p id="typing_prompt">Press the button below to generate a typing prompt!</p>
-        <a id="call_book_api" onclick="get_book_data()">Retrieve Prompt</a>
+        <p >Press the button below to generate a typing prompt!</p>
+        <a>Retrieve Prompt</a>
+        <button onclick="book_handler.retrieve_book_data('OL7353617M')">Search</button>
+        <p id="search_result">Search Results go here!</p>
     </div>
     <script src="static/typing_prompt.js"></script>
 </body>
