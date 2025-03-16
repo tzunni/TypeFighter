@@ -51,6 +51,11 @@ npm run start-api
 npm start
 ```
 
+4. Run Flask instance (Windows) in debug-mode
+```commandline
+flask --app main run --debug
+```
+
 ### Github Commit Legend:
 📄 Documentation <br>
 ✨ New Feature <br>
