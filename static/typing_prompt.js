@@ -3,11 +3,21 @@ class Book_Handler {
         // Empty
     }
 
-    retrieve_book_data(book_identifier){
-        book_api.request_book_data(book_identifier);
+    async retrieve_book_data(book_identifier){
+        try{
+            const book_data = await book_api.request_book_data(book_identifier);
+            // Processing data goes here.
+            this.update_UI(book_data);
+        } catch (error){
+            // May update front-end elements with (fail) information.
+            console.error(error.message);
+        }
     }
 
-
+    update_UI(book_data){
+        // Security Note: Do not RETRIEVE book data from .innerHTML due to inspect element
+        document.getElementById("search_result").innerHTML = book_data.title;
+    }
 } // End Class (Book_Handler)
 
 class Book_API{
@@ -23,15 +33,9 @@ class Book_API{
         try{
             const response = await fetch(URL);
             if (!response.ok){
-                throw new Error('Response status: ${response.status}');
+                throw new Error('Response status:' + response.status);
             }
-
-            const book_data = await response.json();
-            document.getElementById("search_result").innerHTML = book_data.title
-            // Security Note: Do not RETRIEVE book data from .innerHTML due to inspect element
-            // Unable to return the .json object, returns the promise instead. Will need to do front end manipulations in the try statement here for the time being...
-                // Also unable to assign those .json.data attributes to a new object and return the new object
-            // Instead: -> function_name(book_data.attribute)
+            return await response.json(); // Note: You cannot return (new_object = object.json) or (new_object = object.json.attribute) since it'll return a promise or fail entirely.
 
         } catch(error){
             console.error(error.message);
@@ -44,10 +48,10 @@ class Book_API{
         try{
             const response = await fetch(URL);
             if (!response.ok){
-                throw new Error('Response status: ${response.status}');
+                throw new Error('Response status:' + response.status);
             }
 
-            const book_data = await response.json();
+            return await response.json();
             // Data Processing
 
         } catch(error){
@@ -70,5 +74,3 @@ class Book_API{
 
 var book_handler = new Book_Handler();
 var book_api = new Book_API();
-
-//document.addEventListener("DOMContentLoaded", create_book_api);
