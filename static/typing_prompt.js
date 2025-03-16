@@ -59,7 +59,7 @@ class Book_API{
         let work_id = "OL_M"
         const work_id_range_min = 1;
         const work_id_range_max = 10000000;
-        work_id = work_id.replace("_", _generate_work_id_digits(work_id_range_min, work_id_range_max);)
+        work_id = work_id.replace("_", _generate_work_id_digits(work_id_range_min, work_id_range_max));
         return work_id;
     }
 
