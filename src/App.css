@@ -1,28 +1,43 @@
 .App {
   align-self: stretch;
-  height: 596px;
-  padding: 160px 24px;
+  height: 100vh; /* Use full viewport height */
+  padding: 0; /* Remove padding to avoid offset */
   background: linear-gradient(0deg, #E3E3E3 0%, #E3E3E3 100%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   gap: 32px;
-}.title {
+}
+
+.title {
   align-self: stretch;
   text-align: center;
   color: #0C0C0D;
   font-size: 72px;
   font-weight: 700;
   line-height: 86.4px;
-}.subtitle {
+}
+
+.subtitle {
   align-self: stretch;
   text-align: center;
   color: #0C0C0D;
   font-size: 32px;
   font-weight: 400;
   line-height: 38.4px;
-}.hp-bar {
+}
+
+.boss {
+  text-align: center;
+  height: 400px;
+  width: 400px;
+  display: flex; /* Ensure the image is centered inside the .boss div */
+  justify-content: center;
+  align-items: center;
+}
+
+.hp-bar {
   width: 166px;
   display: flex;
   justify-content: flex-start;
@@ -34,7 +49,9 @@
   border: 1px solid #2C2C2C;
   color: #F5F5F5;
   font-size: 16px;
-}.attack-button {
+}
+
+.attack-button {
   width: 166px;
   display: flex;
   justify-content: center;
@@ -46,4 +63,6 @@
   border: 1px solid #767676;
   color: #1E1E1E;
   font-size: 16px;
+  cursor: pointer;
 }
+
