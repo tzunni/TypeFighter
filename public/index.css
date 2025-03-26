@@ -316,3 +316,29 @@ input {
     display: none;
 }
 
+.see-more {
+    padding: 8px 16px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.blinking-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.125);
+    margin-left: 5px;
+    animation: blink 1s step-start infinite;
+    vertical-align: middle; /* Aligns the cursor with the middle of the text */
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
