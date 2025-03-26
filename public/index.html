@@ -161,5 +161,73 @@
             </div>
         </div>
     </div>
+    <div id="auth-popup" class="popup-overlay hidden">
+        <div class="popup">
+            <h2 id="popup-title">Sign In</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required />
+                </div>
+                <div id="confirm-password-group" class="form-group hidden">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" />
+                </div>
+                <button type="submit" class="submit-button">Sign In</button>
+            </form>
+            <button class="close-button" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    <script>
+        const popup = document.getElementById('auth-popup');
+        const popupTitle = document.getElementById('popup-title');
+        const confirmPasswordGroup = document.getElementById('confirm-password-group');
+        const submitButton = document.querySelector('.submit-button');
+
+        // Open the popup
+        function openPopup(isRegistering) {
+            popup.classList.remove('hidden');
+            if (isRegistering) {
+                popupTitle.textContent = 'Register';
+                confirmPasswordGroup.classList.remove('hidden'); // Show confirm password for registration
+                submitButton.textContent = 'Register';
+            } else {
+                popupTitle.textContent = 'Sign In';
+                confirmPasswordGroup.classList.add('hidden'); // Hide confirm password for sign-in
+                submitButton.textContent = 'Sign In';
+            }
+        }
+
+        // Close the popup
+        function closePopup() {
+            popup.classList.add('hidden');
+        }
+
+        // Attach event listeners to the "Sign in" and "Register" buttons
+        document.querySelector('.sign-in').addEventListener('click', () => openPopup(false));
+        document.querySelector('.register').addEventListener('click', () => openPopup(true));
+
+        // Handle form submission
+        document.getElementById('auth-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (popupTitle.textContent === 'Register') {
+                const confirmPassword = document.getElementById('confirm-password').value;
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+            }
+
+            alert(`${popupTitle.textContent} successful!`);
+            closePopup();
+        });
+    </script>
 </body>
 </html>
