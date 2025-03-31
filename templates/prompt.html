@@ -8,11 +8,13 @@
 </head>
 <body>
     <div class="container">
-        <p id="typing_prompt">Press the button below to generate a typing prompt!</p>
-        <a id="call_button" onclick="book_handler.retrieve_random_book_data()">Retrieve Book Prompt</a>
-        <button onclick="book_handler.retrieve_book_data('OL7353617M')">Get Fantastic Mr. Fox</button>
-        <p id="search_result">Search Results go here!</p>
+        <p id="typing_prompt">Press the button below to get a random book.</p>
+        <button id="btn_get_random_book_call">Get Random Book</button>
+        <p id="status">Status Code</p>
+        <p id="book_information">Search Results go here!</p>
     </div>
-    <script src="static/typing_prompt.js"></script>
+    <script type="module" src="static/books_api.js"></script>
+    <script type="module" src="static/ui_handler.js"></script>
+    <script type="module" src="static/typing_prompt.js"></script>
 </body>
 </html>
