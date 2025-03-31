@@ -1,38 +1,49 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  align-self: stretch;
+  height: 596px;
+  padding: 160px 24px;
+  background: linear-gradient(0deg, #E3E3E3 0%, #E3E3E3 100%);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  align-items: center;
+  gap: 32px;
+}.title {
+  align-self: stretch;
+  text-align: center;
+  color: #0C0C0D;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 86.4px;
+}.subtitle {
+  align-self: stretch;
+  text-align: center;
+  color: #0C0C0D;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 38.4px;
+}.hp-bar {
+  width: 166px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: #009951;
+  border-radius: 8px;
+  border: 1px solid #2C2C2C;
+  color: #F5F5F5;
+  font-size: 16px;
+}.attack-button {
+  width: 166px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: #e7b350;
+  border-radius: 8px;
+  border: 1px solid #767676;
+  color: #1E1E1E;
+  font-size: 16px;
 }
