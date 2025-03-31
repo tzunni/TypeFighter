@@ -28,9 +28,10 @@ class Book_Handler {
         }
     }
 
-    update_UI(book_data){
+    update_UI(book_data) {
         // Security Note: Do not RETRIEVE book data from .innerHTML due to inspect element, only SET
-        document.getElementById("UI").innerHTML = book_data.first_sentence.value;
+        const uiElement = document.getElementById("UI");
+        uiElement.innerHTML = `${book_data.first_sentence.value}<span class="blinking-cursor">|</span>`;
         document.getElementById("search_result").innerHTML = book_data.title;
     }
 } // End Class (Book_Handler)
