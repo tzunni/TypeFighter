@@ -36,13 +36,12 @@ class UI_Handler{
         this.book_handler.print_book_missing_fields(book);
         console.log("Book Data (Title): " + this.book_handler.get_book_field_data(book, "title"));
 
-        // Update UI (In Progress)
-        // To Do: Parser for returned array values (such as languages, works, and identifiers) or built into the books class as a function (returning a string)
-        const _missing_field_names = this.book_handler.get_book_missing_field_names(book);
         const _field_names = this.book_handler.get_book_field_names(book);
+        const _missing_field_names = this.book_handler.get_book_missing_field_names(book);
 
         let output_string = ""
-        if (_missing_field_names.length > 0){
+        if (this.book_handler.is_missing_field_data(book)){
+
             let error_fields = _missing_field_names.join(", ");
             document.getElementById("status").innerHTML = "Status - Missing the following fields: " + error_fields;
             document.getElementById("status").style.color = this.status_colours.RED;
@@ -53,7 +52,22 @@ class UI_Handler{
         }
 
         for (let i = 0; i < _field_names.length; i++){
-            output_string = output_string + _field_names[i] + ": " + this.book_handler.get_book_field_data(book, _field_names[i]) + "," + "<br />";
+            const _current_field_name = _field_names[i];
+            if (_missing_field_names.includes(_current_field_name)){
+                output_string += (_current_field_name + ": " + "null (missing)" + ", " + "<br />");
+            }
+            // To Do: Implement Parser for Dict & Arrays from Book Class
+//            else if (this.book_handler.is_book_metadata_field_dict(book, _current_field_name)){
+//                output_string += (_field_names[i] + ": " + "<br />");
+//                const _metadata_array = this.book_handler.get_book_field_data(book, _current_field_name);
+//                const _metadata_keys = Object.keys(_metadata_array);
+//                for (const _key in _metadata_keys){
+//                    output_string += ("  - " + _key + ": " + _metadata_array[_key] + "<br />");
+//                }
+//            }
+            else{
+                output_string += (_current_field_name + ": " + this.book_handler.get_book_field_data(book, _current_field_name) + ", " + "<br />");
+            }
         }
 
         document.getElementById("book_information").innerHTML = output_string;

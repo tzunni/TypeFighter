@@ -51,6 +51,15 @@ class Book_Handler {
         return book._get_missing_field_names();
     }
 
+    is_book_metadata_field_dict(book, field_name){
+        // To Do: Implement detection for array & dictionaries
+        return false;
+    }
+
+    is_missing_field_data(book){
+        return book._is_missing_field_data();
+    }
+
     print_book_missing_fields(book){
         book._print_missing_fields();
     }
@@ -82,6 +91,19 @@ class Bookshelf{
 class Book{
     constructor(book_data){
         // Simulate enum with dict to ensure proper use of key_fields & prevent programmer error (typos)
+        this.key_fields = {}
+        this._bibliographic_citation_fields = [] // = this.key_fields as strings
+        this._metadata = {};
+        this._initialize(book_data);
+    }
+
+    _initialize(book_data){
+        this._set_key_fields();
+        this._set_bcf(book_data);
+        this._set_metadata(book_data);
+    }
+
+    _set_key_fields(){
         this.key_fields = {
             TITLE:"title",
             ISBN_10:"isbn_10",
@@ -93,21 +115,81 @@ class Book{
             CREATED:"created",
             FIRST_SENTENCE:"first_sentence"
         }
-        this._bibliographic_citation_fields = [] // = this.key_fields key strings
+    }
+
+    _set_bcf(book_data){
         const _field_keys = Object.keys(this.key_fields)
         for (let i = 0; i < _field_keys.length; i++){
             this._bibliographic_citation_fields.push(this.key_fields[_field_keys[i]])
         }
+    }
 
-        // Save metadata
-        this._metadata = {}
+    _set_metadata(book_data){
         for (let i = 0; i < this._bibliographic_citation_fields.length; i++){
-            if (this._bibliographic_citation_fields[i] in book_data){
-                this._metadata[this._bibliographic_citation_fields[i]] = book_data[this._bibliographic_citation_fields[i]];
+            const field_name = this._bibliographic_citation_fields[i]
+
+            if (!(field_name in book_data)){
+                this._metadata[field_name] = null;
+                continue;
             }
-            else{
-                this._metadata[this._bibliographic_citation_fields[i]] = null; // Default: null until decided to be na, empty string, etc
+
+            if (typeof book_data[field_name] === "string"){
+                this._metadata[field_name] = book_data[field_name];
+                continue;
             }
+
+            if (this._is_nested_dict(book_data, field_name)){
+                this._set_metadata_field_inner_dictionary(book_data, field_name);
+                continue;
+            }
+
+            if (this._is_normal_array(book_data, field_name)){
+                this._set_metadata_field_inner_array(book_data, field_name);
+            }
+
+            if (this._is_normal_dict(book_data, field_name)){
+                this._metadata[field_name] = {};
+                this._metadata[field_name] = book_data[field_name];
+                continue;
+            }
+        } // end for
+    }
+
+    _is_normal_dict(book_data, field_name){
+        return ((typeof book_data[field_name] === "object") && !(Array.isArray(book_data[field_name])));
+    }
+
+    _is_normal_array(book_data, field_name){
+        const _last_index = book_data[field_name].length - 1;
+        return (
+            (typeof book_data[field_name][_last_index] === "string") &&
+            (Array.isArray(book_data[field_name])) &&
+            (typeof book_data[field_name] === "object"))
+    }
+
+    _is_nested_dict(book_data, field_name){
+        // Intended to only be used in init for _set_metadata
+        const _last_index = book_data[field_name].length - 1;
+        return (
+            (typeof book_data[field_name][_last_index] === "object") &&
+            (Array.isArray(book_data[field_name])) &&
+            (typeof book_data[field_name] === "object")
+        )
+    }
+
+    _set_metadata_field_inner_dictionary(book_data, field_name){
+        const inner_dict = book_data[field_name][0]; // Assume only one index
+        this._metadata[field_name] = {};
+        const _inner_dict_keys = Object.keys(inner_dict);
+        for (let j = 0; j < _inner_dict_keys.length; j++){
+            this._metadata[field_name][_inner_dict_keys[j]] = inner_dict[_inner_dict_keys[j]];
+        }
+    }
+
+    _set_metadata_field_inner_array(book_data, field_name){
+        this._metadata[field_name] = [];
+        for (let j = 0; j < book_data[field_name].length; j++){
+            this._metadata[field_name][j] = book_data[field_name][j];
         }
     }
 
@@ -125,7 +207,7 @@ class Book{
         if (Object.keys(this._metadata).includes(field_name)){
             return this._metadata[field_name];
         }
-        return "";
+        return null;
     }
 
     _get_missing_field_names(){
@@ -141,6 +223,18 @@ class Book{
         return missing_fields;
     }
 
+    _is_missing_field_data(){
+        let is_missing = false;
+        for (let i = 0; i < this._bibliographic_citation_fields.length; i++){
+             let _field_name = this._bibliographic_citation_fields[i];
+             if (!this._metadata[_field_name]){
+                 is_missing = true;
+                 break;
+             }
+        }
+        return is_missing;
+    }
+
     _print_missing_fields(){
         const missing_fields = this._get_missing_field_names()
         if (missing_fields.length == 0){
@@ -152,7 +246,6 @@ class Book{
             console.log("Missing Book Fields: " + output_string);
         }
     }
-    // To Do: Functions for parsing array fields (such as languages) or having flags denoting those.
 }
 
 // API Call Logic (Private)
