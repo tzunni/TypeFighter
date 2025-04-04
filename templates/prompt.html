@@ -13,8 +13,14 @@
         <p id="status">Status Code</p>
         <p id="book_information">Search Results go here!</p>
     </div>
-    <script type="module" src="static/books_api.js"></script>
-    <script type="module" src="static/ui_handler.js"></script>
+        <div id="book_search_engine_container">
+            <h3>🔎 Book Search Engine</h3>
+            <input type="text" id="search_request" placeholder="Enter book title here" />
+            <button id="btn_book_search">Submit</button>
+            <p id="search_status"></p>
+            <p id="search_result"></p>
+        </div>
+    <script type="module" src="static/web_display.js"></script>
     <script type="module" src="static/typing_prompt.js"></script>
 </body>
 </html>
