@@ -1,5 +1,5 @@
 import './App.css';
-import BookHandler from './typing_prompt.js';
+import ui_handler from './web_display.js';
 
 function App() {
   return (
@@ -9,8 +9,8 @@ function App() {
         <img className="boss" src="/1200px-Bowser.webp" alt="Bowser" />
         <div className="hp-bar">HP: 100%</div>
         <button
-          className="attack-button"
-          onClick={() => BookHandler.retrieve_book_data('OL7353617M')}
+          id="attack-button"
+          onClick={() => ui_handler.get_book_data('OL7353617M')}
         >
           Attack!
         </button>
