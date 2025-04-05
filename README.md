@@ -14,44 +14,55 @@ Supported Versions:
 - `Flask`: 3.0.0
 - `React`: 19.0.0
 
-1. Create Virtual Environment
+**1. Create Virtual Environment**
 ```powershell
 python -m venv venv
 ```
 
-2a. Activate Virtual Environment
+**2a. Activate Virtual Environment**
 
 | System  | Command                   |
 |---------|---------------------------|
 | Windows | venv/Scripts/Activate.ps1 |
 | Linux   | . .venv/bin/activate      |
  
-3. Install Flask
+**3. Install Flask**
+
 ```powershell
 pip install Flask
 ```
 
-4. Install Node.js for React
+**4. Install Node.js for React**
+
+- Be sure to restart your system after installing Node.js.
+
+**5. Update matching version**
+
+- Users may encounter the message "'react-scripts' is not recognized as an internal or external command" if the dependency versions are not matching.
+
+```powershell
+npm install
+```
 
 ## Run Project
-1. Activate Virtual Environment
+**1. Activate Virtual Environment**
 
 | System  | Command                   |
 |---------|---------------------------|
 | Windows | venv/Scripts/Activate.ps1 |
 | Linux   | . .venv/bin/activate      |
 
-2. Create back-end instance
+**2. Create back-end instance (Linux)**
 ```powershell
 npm run start-api
 ```
 
-3. Create browser instance
+**3. Create browser instance**
 ```powershell
 npm start
 ```
 
-4. Run Flask instance (Windows) in debug-mode
+**4. Run Flask instance (Windows) in debug-mode**
 ```commandline
 flask --app main run --debug
 ```
