@@ -8,8 +8,11 @@ import { useState } from 'react';
 // React Component
 function Root_App(){
     const [timer_state, set_timer_state] = useState(0.0);
-    const [prompt, set_prompt] = useState("NA")
-    const [input, set_input] = useState("")
+    const [prompt, set_prompt] = useState("NA");
+    const [input, set_input] = useState("");
+    const [count, set_count] = useState(0);
+    const [speed, set_accuracy] = useState(0);
+    const [accuracy, set_speed] = useState(0);
 
     const update_score = () => {
         set_timer_state(timer_state + 0.1)
@@ -24,10 +27,8 @@ function Root_App(){
         ui_handler.get_book_data('OL7353617M')
     }
 
-    const console_log_data = () => {
-        console.log("Timer : " + timer_state)
-        console.log("Prompt : " + prompt)
-        console.log("Input : " + input)
+    const display_counter = () => {
+        set_count(count + 1);
     }
 
     return (
@@ -41,12 +42,10 @@ function Root_App(){
             placeholder="Type the sentence above here."
             onChange={() => update_score()}
         />
-        <p>Speed:</p>
-        <p id="speed"></p>
+        <p>Speed: {speed}</p>
         <br/>
-        <p>Accuracy:</p>
-        <p id="accuracy"></p>
-        <button onClick={() => console_log_data()}> [Console Log Data] </button>
+        <p>Accuracy: {accuracy}</p>
+        <button onClick={() => display_counter()}> [Counter]: {count} </button>
     </div>
     ) // Return HTML tags
 }
