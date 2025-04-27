@@ -31,6 +31,7 @@ class UI_Handler{
     }
 
     async get_book_data(work_id){
+        console.log("Fetching Data...")
         try{
             const book = await this.book_handler.retrieve_book_data(work_id);
             this.update_book_UI(book);
@@ -62,9 +63,9 @@ class UI_Handler{
     // Security Note: Do not RETRIEVE book data from .innerHTML due to inspect element, only SET
     update_book_UI(book){
         console.log(book)
-        const display_prompt = document.getElementById("UI");
-        const typing_prompt_sentence = this.book_handler.get_book_field_data(book, "first_sentence").value;
-        display_prompt.innerHTML = `${typing_prompt_sentence}<span class="blinking-cursor">|</span>`;
+        document.getElementById("prompt_display_box").innerHTML = this.book_handler.get_book_field_data(book, "first_sentence").value;
+//        const typing_prompt_sentence = this.book_handler.get_book_field_data(book, "first_sentence").value;
+//        display_prompt.innerHTML = `${typing_prompt_sentence}<span class="blinking-cursor">|</span>`;
 
         this.development_console_logging(book)
 //        this.display_book_metadata(book)
