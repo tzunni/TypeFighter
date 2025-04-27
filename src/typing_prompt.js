@@ -8,38 +8,73 @@ import { useState } from 'react';
 // React Component
 function Root_App(){
     const [timer_state, set_timer_state] = useState(0.0);
-    const [prompt, set_prompt] = useState("NA");
-    const [input, set_input] = useState("");
+    const [book_prompt, set_book_prompt] = useState("NA");
     const [count, set_count] = useState(0);
     const [speed, set_speed] = useState(0);
     const [accuracy, set_accuracy] = useState(0);
+    const [mistakes, set_mistakes] = useState(0);
+    const [isPromptMatch, set_match_flag] = useState(0)
 
     function update_score(event) {
-        if (prompt == "NA"){
-            set_prompt(document.getElementById("prompt_display_box").innerHTML)
+        const user_input = event.target.value;
+
+        // Lock Data after a correct prompt, ignore any new typed characters
+        if (isPromptMatch){
+            return
         }
 
-        const current_input = event.target.value; // Get the current input value
-        console.log("User Input: " + current_input)
-        set_input(current_input);
+        // Set book_prompt
+        if (book_prompt == "NA"){
+            const new_book_prompt = document.getElementById("prompt_display_box").innerHTML
+            set_book_prompt(new_book_prompt)
 
-        // Compare input with the prompt
-        const matchCount = current_input.split("").reduce((acc, char, index) => {
-            return acc + (char === prompt[index] ? 1 : 0);
-        }, 0);
+            // Calculate accuracy
+            if (user_input.length == 1){
+                if (new_book_prompt[0] == user_input){
+                    set_accuracy(100)
+                }
+                else {
+                    const total_characters = book_prompt.length
+                    const new_accuracy = Math.floor(100 * total_characters / (total_characters + mistakes + 1))
+                    set_accuracy(new_accuracy)
+                    set_mistakes(mistakes + 1)
+                }
+            }
+            else{
+                set_accuracy(0)
+            }
+            return
+        }
 
-        // Calculate accuracy
-        const current_accuracy = (matchCount / prompt.length) * 100;
-        set_accuracy(current_accuracy.toFixed(2));
-
-        // Check if the prompt is fully matched
-        console.log("CI: " + current_input + " | prompt: " + prompt)
-        if (current_input === prompt) {
+        // Calculate Accuracy
+        // -> Check win before calculating accuracy
+        if (user_input == book_prompt){
+            document.getElementById("prompt_display_box").style.color = "green"
+            set_match_flag(true)
             console.log("Match!")
+            return
         }
+
+        // -> Case: user backtracks
+        if (mistakes == 0 && user_input.length == 0){
+            set_accuracy(100)
+            return
+        }
+
+        // -> Case: new character
+        if (!book_prompt.startsWith(user_input)){
+            const total_characters = book_prompt.length
+            const new_accuracy = Math.floor(100 * total_characters / (total_characters + mistakes + 1))
+            set_accuracy(new_accuracy)
+            set_mistakes(mistakes + 1)
+        }
+
+        // Console Log: CI & Book_Prompt
+        console.log("User Input: " + user_input)
+        console.log("CI: " + user_input + " | book_prompt: " + book_prompt)
     }
 
-    const update_prompt_display = () => {
+    const update_book_prompt_display = () => {
         ui_handler.get_book_data('OL7353617M')
     }
 
@@ -50,7 +85,7 @@ function Root_App(){
     return (
     <div>
         <p id="game_status"> React Application :3 </p>
-        <button onClick={() => update_prompt_display()}> [Get Book Prompt] </button>
+        <button onClick={() => update_book_prompt_display()}> [Get Book Prompt] </button>
         <p id="prompt_display_box"> Typing Prompt Display Here </p>
 
         <input type="text"
