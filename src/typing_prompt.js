@@ -1,11 +1,11 @@
 // Typing Test Class
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ui_handler from './web_display.js'
+//import ui_handler from './web_display.js'
 import { useState, useEffect } from 'react';
 
 // React Component
-function Typing_Test_Root(){
+function Typing_Test_Root({ updateBookPrompt }){
     const [timer_state, set_timer_state] = useState(0.0); // captures seconds with tfm = 1
     const [isTimerOn, set_timer_on] = useState(false)
     const [book_prompt, set_book_prompt] = useState("NA");
@@ -14,6 +14,11 @@ function Typing_Test_Root(){
     const [mistakes, set_mistakes] = useState(0);
     const [isPromptMatch, set_match_flag] = useState(false)
     const timer_frequency_modulator = 100; // sampling time = seconds / tfm, ex: 100 = 1ms (0.001 seconds)
+
+    // Call API when root is rendered
+    useEffect(() => {
+        updateBookPrompt();
+    }, [updateBookPrompt]); // Run only on mount via dependency
 
     useEffect(() => {
         let interval = null;
@@ -139,13 +144,8 @@ function Typing_Test_Root(){
         console.log("CI: " + user_input + " | book_prompt: " + book_prompt)
     }
 
-    const update_book_prompt_display = () => {
-        ui_handler.get_book_data('OL7353617M')
-    }
-
     return (
     <div className="Typing_Test" id="UI">
-        <button onClick={() => update_book_prompt_display()}> [Get Book Prompt] </button>
         <p id="prompt_display_box"> Typing Prompt Display Here </p>
 
         <input type="text"

@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import './App.css';
 import Typing_Test_Root from './typing_prompt.js';
+import ui_handler from './web_display.js'
 
 function App() {
     const [page_state, set_page_state] = useState("home");
     const valid_states = ["home", "typing_test"]
+
+    const updateBookPrompt = async () => {
+        ui_handler.get_book_data('OL7353617M');
+    };
 
     let current_page;
 
@@ -18,7 +23,10 @@ function App() {
                 <div className="hp-bar">HP: 100%</div>
                 <button
                     id="attack-button"
-                    onClick={() => set_page_state("typing_test")}
+                        onClick={() => {
+                            set_page_state("typing_test");
+                            updateBookPrompt();
+                        }}
                     >
                     Attack!
                 </button>
@@ -26,7 +34,7 @@ function App() {
             );
             break
         case "typing_test":
-            current_page = <Typing_Test_Root />;
+            current_page = <Typing_Test_Root updateBookPrompt={updateBookPrompt} />;
             break;
 
         default:
