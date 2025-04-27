@@ -5,7 +5,7 @@ import ui_handler from './web_display.js'
 import { useState, useEffect } from 'react';
 
 // React Component
-function Root_App(){
+function Typing_Test_Root(){
     const [timer_state, set_timer_state] = useState(0.0); // captures seconds with tfm = 1
     const [isTimerOn, set_timer_on] = useState(false)
     const [book_prompt, set_book_prompt] = useState("NA");
@@ -144,8 +144,7 @@ function Root_App(){
     }
 
     return (
-    <div>
-        <p id="game_status"> React Application :3 </p>
+    <div className="Typing_Test" id="UI">
         <button onClick={() => update_book_prompt_display()}> [Get Book Prompt] </button>
         <p id="prompt_display_box"> Typing Prompt Display Here </p>
 
@@ -161,4 +160,4 @@ function Root_App(){
     ) // Return HTML tags
 }
 
-export default Root_App;
+export default Typing_Test_Root;
