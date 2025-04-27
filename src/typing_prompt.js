@@ -1,19 +1,40 @@
 // Typing Test Class
-// To Do: Implement Typing Test
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ui_handler from './web_display.js'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // React Component
 function Root_App(){
-    const [timer_state, set_timer_state] = useState(0.0);
+    const [timer_state, set_timer_state] = useState(0.0); // Captures seconds
+    const [isTimerOn, set_timer_on] = useState(false)
     const [book_prompt, set_book_prompt] = useState("NA");
-    const [count, set_count] = useState(0);
-    const [speed, set_speed] = useState(0);
-    const [accuracy, set_accuracy] = useState(0);
+    const [wpm, set_wpm] = useState('?');
+    const [accuracy, set_accuracy] = useState('?');
     const [mistakes, set_mistakes] = useState(0);
-    const [isPromptMatch, set_match_flag] = useState(0)
+    const [isPromptMatch, set_match_flag] = useState(false)
+
+    useEffect(() => {
+        let interval = null;
+        if (isTimerOn){
+            interval = setInterval(() => {
+                set_timer_state((previous_time) => previous_time + 1)
+            }, (1000))
+            console.log("TIMER HERE: " + timer_state)
+        } else {
+            clearInterval(interval)
+        }
+        return () => clearInterval(interval);
+    }, [isTimerOn]);
+
+    const start_typing_test = () => {
+        set_timer_on(true);
+        set_accuracy(0)
+    }
+
+    const stop_typing_test = () => {
+        set_timer_on(false);
+    }
 
     function update_score(event) {
         const user_input = event.target.value;
@@ -23,10 +44,25 @@ function Root_App(){
             return
         }
 
+        // Update WPM
+        console.log("TIMER: " + timer_state)
+
+        if (timer_state > 0){
+            const number_of_words = user_input.split(" ").length
+            const minutes_elapsed = Math.round((timer_state / 60) * 100) / 100
+            const new_wpm = Math.floor(number_of_words / minutes_elapsed)
+            set_wpm(new_wpm)
+
+            console.log("WPM: " + new_wpm)
+            console.log("Minutes elapsed: " + minutes_elapsed)
+            console.log("Num of Words: " + number_of_words)
+        }
+
         // Set book_prompt
         if (book_prompt == "NA"){
             const new_book_prompt = document.getElementById("prompt_display_box").innerHTML
             set_book_prompt(new_book_prompt)
+            start_typing_test()
 
             // Calculate accuracy
             if (user_input.length == 1){
@@ -52,6 +88,7 @@ function Root_App(){
             document.getElementById("prompt_display_box").style.color = "green"
             set_match_flag(true)
             console.log("Match!")
+            stop_typing_test()
             return
         }
 
@@ -78,10 +115,6 @@ function Root_App(){
         ui_handler.get_book_data('OL7353617M')
     }
 
-    const display_counter = () => {
-        set_count(count + 1);
-    }
-
     return (
     <div>
         <p id="game_status"> React Application :3 </p>
@@ -93,10 +126,9 @@ function Root_App(){
             placeholder="Type the sentence above here."
             onChange={update_score}
         />
-        <p>Speed: {speed}</p>
+        <p>Speed: {wpm}</p>
         <br/>
         <p>Accuracy: {accuracy}</p>
-        <button onClick={() => display_counter()}> [Counter]: {count} </button>
     </div>
     ) // Return HTML tags
 }
