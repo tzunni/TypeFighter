@@ -11,15 +11,31 @@ function Root_App(){
     const [prompt, set_prompt] = useState("NA");
     const [input, set_input] = useState("");
     const [count, set_count] = useState(0);
-    const [speed, set_accuracy] = useState(0);
-    const [accuracy, set_speed] = useState(0);
+    const [speed, set_speed] = useState(0);
+    const [accuracy, set_accuracy] = useState(0);
 
-    const update_score = () => {
-        set_timer_state(timer_state + 0.1)
-        document.getElementById("speed").innerHTML = timer_state
-        document.getElementById("accuracy").innerHTML = timer_state
-        if (prompt == input){
-            document.getElementById("game_status").innerHTML = "Prompt Complete!"
+    function update_score(event) {
+        if (prompt == "NA"){
+            set_prompt(document.getElementById("prompt_display_box").innerHTML)
+        }
+
+        const current_input = event.target.value; // Get the current input value
+        console.log("User Input: " + current_input)
+        set_input(current_input);
+
+        // Compare input with the prompt
+        const matchCount = current_input.split("").reduce((acc, char, index) => {
+            return acc + (char === prompt[index] ? 1 : 0);
+        }, 0);
+
+        // Calculate accuracy
+        const current_accuracy = (matchCount / prompt.length) * 100;
+        set_accuracy(current_accuracy.toFixed(2));
+
+        // Check if the prompt is fully matched
+        console.log("CI: " + current_input + " | prompt: " + prompt)
+        if (current_input === prompt) {
+            console.log("Match!")
         }
     }
 
@@ -40,7 +56,7 @@ function Root_App(){
         <input type="text"
             id="prompt_input_box"
             placeholder="Type the sentence above here."
-            onChange={() => update_score()}
+            onChange={update_score}
         />
         <p>Speed: {speed}</p>
         <br/>
@@ -48,12 +64,6 @@ function Root_App(){
         <button onClick={() => display_counter()}> [Counter]: {count} </button>
     </div>
     ) // Return HTML tags
-}
-
-class Typing_Test{
-    constructor(){
-
-    }
 }
 
 export default Root_App;
