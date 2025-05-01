@@ -28,6 +28,14 @@
   line-height: 38.4px;
 }
 
+.main_block {
+    align-self: stretch;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .boss {
   text-align: center;
   height: 400px;
@@ -38,17 +46,17 @@
 }
 
 .hp-bar {
-  width: 166px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 16px;
-  padding: 12px;
-  background: #009951;
-  border-radius: 8px;
-  border: 1px solid #2C2C2C;
-  color: #F5F5F5;
-  font-size: 16px;
+    width: 166px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    background: #009951;
+    border-radius: 8px;
+    border: 1px solid #2C2C2C;
+    color: #F5F5F5;
+    font-size: 16px;
 }
 
 #attack-button {
