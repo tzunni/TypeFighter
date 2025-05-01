@@ -6,13 +6,18 @@ import { useState, useEffect } from 'react';
 
 // React Component
 function Typing_Test_Root({ updateBookPrompt }){
+    const [page_state, set_page_state] = useState("typing_test");
+    const valid_states = ["typing_test", "results"];
+    let current_page;
+
     const [timer_state, set_timer_state] = useState(0.0); // captures seconds with tfm = 1
-    const [isTimerOn, set_timer_on] = useState(false)
+    const [isTimerOn, set_timer_on] = useState(false);
+    const [total_time_elapsed, set_total_time_elapsed] = useState(0.0);
     const [book_prompt, set_book_prompt] = useState("NA");
     const [wpm, set_wpm] = useState('?');
     const [accuracy, set_accuracy] = useState('?');
     const [mistakes, set_mistakes] = useState(0);
-    const [isPromptMatch, set_match_flag] = useState(false)
+    const [isPromptMatch, set_match_flag] = useState(false);
     const timer_frequency_modulator = 100; // sampling time = seconds / tfm, ex: 100 = 1ms (0.001 seconds)
 
     // Call API when root is rendered
@@ -28,18 +33,63 @@ function Typing_Test_Root({ updateBookPrompt }){
             }, (1000 / timer_frequency_modulator))
             console.log("Timer started!")
         } else {
-            clearInterval(interval)
+            set_total_time_elapsed(timer_state); // Save total time elapsed before timer object is deleted
+            clearInterval(interval);
         }
-        return () => clearInterval(interval);
+        return () => {
+            if (interval) { clearInterval(interval); }
+        };
     }, [isTimerOn]);
 
-    const start_typing_test = () => {
+    // State Handler
+    switch(page_state){
+        case "typing_test":
+            current_page = (
+            <div>
+                <p id="prompt_display_box"> Typing Prompt Display Here </p>
+
+                <input type="text"
+                    id="prompt_input_box"
+                    placeholder="Type the sentence above here."
+                    onChange={update_score}
+                />
+                <p>Speed: {wpm}</p>
+                <br/>
+                <p>Accuracy: {accuracy}</p>
+            </div>
+            );
+            break
+        case "results":
+            current_page = (
+            <div>
+                <p>Looks like the page transition worked!</p>
+                <p>Total Time Elapsed: {total_time_elapsed}</p>
+                <p>Final WPM: {wpm}</p>
+                <p>Accuracy: {accuracy}</p>
+                <p>Total Mistakes: {mistakes}</p>
+            </div>
+            );
+            break;
+
+        default:
+            current_page = <div>Page not found!</div>
+            break;
+    }
+
+    return (
+        <div className="Typing_Test">
+            {current_page}
+        </div>
+    ); // Return HTML tags
+
+    function start_typing_test(){
         set_timer_on(true);
         set_accuracy(0)
     }
 
-    const stop_typing_test = () => {
+    function stop_typing_test(){
         set_timer_on(false);
+        set_page_state("results");
     }
 
     // Update WPM, only when user input is correct
@@ -58,11 +108,14 @@ function Typing_Test_Root({ updateBookPrompt }){
             let last_word_completion_percent = numerator / denominator
             const number_of_words = input_word_list.length + (last_word_completion_percent - 1)
 
-            const minutes_elapsed = Math.round((timer_state / (60 * timer_frequency_modulator)) * 100) / 100
+            const _initial_rounding_decimal_places = 3
+            let _rounding_constant = 10**(_initial_rounding_decimal_places)
+            const minutes_elapsed = Math.round((timer_state / (60 * timer_frequency_modulator)) * _rounding_constant) / _rounding_constant // Round to THREE Decimal places
             const new_wpm = Math.floor(number_of_words / minutes_elapsed)
             set_wpm(new_wpm)
 
             console.log(`\tTimer ${timer_state}, WPM (words/min) ${new_wpm}`)
+            console.log(`\t\tMinutes Elapsed: ${minutes_elapsed}`)
         }
     }
 
@@ -143,21 +196,6 @@ function Typing_Test_Root({ updateBookPrompt }){
         console.log("User Input: " + user_input)
         console.log("CI: " + user_input + " | book_prompt: " + book_prompt)
     }
-
-    return (
-    <div className="Typing_Test" id="UI">
-        <p id="prompt_display_box"> Typing Prompt Display Here </p>
-
-        <input type="text"
-            id="prompt_input_box"
-            placeholder="Type the sentence above here."
-            onChange={update_score}
-        />
-        <p>Speed: {wpm}</p>
-        <br/>
-        <p>Accuracy: {accuracy}</p>
-    </div>
-    ) // Return HTML tags
 }
 
 export default Typing_Test_Root;
