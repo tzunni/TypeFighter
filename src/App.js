@@ -16,7 +16,7 @@ function App() {
     switch(page_state){
         case "home":
             current_page = (
-            <div>
+            <div className="main_block">
                 <div className="title">TypeFighter</div>
                 <div className="subtitle">Will the boss fall today?</div>
                 <img className="boss" src="/1200px-Bowser.webp" alt="Bowser" />
