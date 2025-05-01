@@ -54,6 +54,7 @@ function Typing_Test_Root({ updateBookPrompt }){
                     id="prompt_input_box"
                     placeholder="Type the prompt displayed here."
                     onChange={update_score}
+                    onPaste={(e) => e.preventDefault()}
                 />
                 <p>Speed: {wpm}</p>
                 <br/>
