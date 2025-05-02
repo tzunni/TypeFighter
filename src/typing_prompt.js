@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from 'react';
 
 // React Component
-function Typing_Test_Root({ updateBookPrompt }){
+function Typing_Test_Root({ update_book_prompt, route_home }){
     const [page_state, set_page_state] = useState("typing_test");
     const valid_states = ["typing_test", "results"];
     let current_page;
@@ -23,8 +23,8 @@ function Typing_Test_Root({ updateBookPrompt }){
 
     // Call API when root is rendered
     useEffect(() => {
-        updateBookPrompt();
-    }, [updateBookPrompt]); // Run only on mount via dependency
+
+    }, [update_book_prompt]); // Run only on mount via dependency
     // Error => Seems to be calling API multiple times (3x consistently)
 
     useEffect(() => {
@@ -48,7 +48,7 @@ function Typing_Test_Root({ updateBookPrompt }){
         case "typing_test":
             current_page = (
             <div>
-                <p id="prompt_display_box"> Typing Prompt Display Here </p>
+                <p id="prompt_display_box"> Loading Prompt... </p>
 
                 <input type="text"
                     id="prompt_input_box"
@@ -57,8 +57,6 @@ function Typing_Test_Root({ updateBookPrompt }){
                     onPaste={(e) => e.preventDefault()}
                 />
                 <p>Speed: {wpm}</p>
-                <br/>
-                <p>Accuracy: {accuracy}</p>
             </div>
             );
             break
@@ -69,6 +67,8 @@ function Typing_Test_Root({ updateBookPrompt }){
                 <p>Final WPM: {wpm}</p>
                 <p>Accuracy: {accuracy}%</p>
                 <p>Total Mistakes: {mistakes} incorrect characters</p>
+                <button onClick={retake_test}>Retake Test</button>
+                <button onClick={route_home}>Return Home</button>
             </div>
             );
             break;
@@ -204,6 +204,21 @@ function Typing_Test_Root({ updateBookPrompt }){
         let total_ms_elapsed = timer_state * (base_sampling_rate / timer_frequency_modulator); // ms = samples * sampling ratio
         let total_seconds_passed = Number(total_ms_elapsed / 1000).toFixed(2);
         set_total_seconds_elapsed(total_seconds_passed);
+    }
+
+    function retake_test(){
+        reset_states()
+        set_page_state("typing_test")
+        update_book_prompt()
+    }
+
+    function reset_states(){
+        set_total_seconds_elapsed(0.0)
+        set_book_prompt("NA")
+        set_wpm('?')
+        set_accuracy('?')
+        set_mistakes(0)
+        set_match_flag(false)
     }
 }
 

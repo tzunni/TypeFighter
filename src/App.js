@@ -7,7 +7,7 @@ function App() {
     const [page_state, set_page_state] = useState("home");
     const valid_states = ["home", "typing_test"]
 
-    const updateBookPrompt = async () => {
+    const update_book_prompt = async () => {
         ui_handler.get_book_data('OL7353617M');
     };
 
@@ -25,7 +25,7 @@ function App() {
                     id="attack-button"
                         onClick={() => {
                             set_page_state("typing_test");
-                            updateBookPrompt();
+                            update_book_prompt();
                         }}
                     >
                     Attack!
@@ -34,7 +34,10 @@ function App() {
             );
             break
         case "typing_test":
-            current_page = <Typing_Test_Root updateBookPrompt={updateBookPrompt} />;
+            current_page = <Typing_Test_Root
+                update_book_prompt={update_book_prompt}
+                route_home ={() => set_page_state("home")}
+                />;
             break;
 
         default:
