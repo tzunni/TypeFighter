@@ -5,51 +5,98 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from 'react';
 
 // React Component
-function Typing_Test_Root({ updateBookPrompt }){
+function Typing_Test_Root({ update_book_prompt, route_home }){
+    const [page_state, set_page_state] = useState("typing_test");
+    const valid_states = ["typing_test", "results"];
+    let current_page;
+
     const [timer_state, set_timer_state] = useState(0.0); // captures seconds with tfm = 1
-    const [isTimerOn, set_timer_on] = useState(false)
+    const [isTimerOn, set_timer_on] = useState(false);
+    const [total_seconds_elapsed, set_total_seconds_elapsed] = useState(0.0);
     const [book_prompt, set_book_prompt] = useState("NA");
     const [wpm, set_wpm] = useState('?');
     const [accuracy, set_accuracy] = useState('?');
     const [mistakes, set_mistakes] = useState(0);
-    const [isPromptMatch, set_match_flag] = useState(false)
-    const timer_frequency_modulator = 100; // sampling time = seconds / tfm, ex: 100 = 1ms (0.001 seconds)
+    const [isPromptMatch, set_match_flag] = useState(false);
+    const base_sampling_rate = 1000; // sampling time = 1000 ms (1 sec)
+    const timer_frequency_modulator = 100; // divide sampling time by tfm, ex: with tfm 100 => sampling time of 1ms (0.001 seconds)
 
     // Call API when root is rendered
     useEffect(() => {
-        updateBookPrompt();
-    }, [updateBookPrompt]); // Run only on mount via dependency
+
+    }, [update_book_prompt]); // Run only on mount via dependency
+    // Error => Seems to be calling API multiple times (3x consistently)
 
     useEffect(() => {
         let interval = null;
         if (isTimerOn){
             interval = setInterval(() => {
                 set_timer_state((previous_time) => previous_time + 1)
-            }, (1000 / timer_frequency_modulator))
+            }, (base_sampling_rate / timer_frequency_modulator)) // 1000 ms / tfm value
             console.log("Timer started!")
         } else {
-            clearInterval(interval)
+            update_total_seconds_elapsed(timer_state) // Save total time elapsed before timer object is deleted
+            clearInterval(interval);
         }
-        return () => clearInterval(interval);
+        return () => {
+            if (interval) { clearInterval(interval); }
+        };
     }, [isTimerOn]);
 
-    const start_typing_test = () => {
+    // State Handler
+    switch(page_state){
+        case "typing_test":
+            current_page = (
+            <div>
+                <p id="prompt_display_box"> Loading Prompt... </p>
+
+                <input type="text"
+                    id="prompt_input_box"
+                    placeholder="Type the prompt displayed here."
+                    onChange={update_score}
+                    onPaste={(e) => e.preventDefault()}
+                />
+                <p>Speed: {wpm}</p>
+            </div>
+            );
+            break
+        case "results":
+            current_page = (
+            <div>
+                <p>Total Time Elapsed: {total_seconds_elapsed} seconds</p>
+                <p>Final WPM: {wpm}</p>
+                <p>Accuracy: {accuracy}%</p>
+                <p>Total Mistakes: {mistakes} incorrect characters</p>
+                <button onClick={retake_test}>Retake Test</button>
+                <button onClick={route_home}>Return Home</button>
+            </div>
+            );
+            break;
+
+        default:
+            current_page = <div>Page not found!</div>
+            break;
+    }
+
+    return (
+        <div className="Typing_Test">
+            {current_page}
+        </div>
+    ); // Return HTML tags
+
+    function start_typing_test(){
         set_timer_on(true);
         set_accuracy(0)
     }
 
-    const stop_typing_test = () => {
+    function stop_typing_test(){
         set_timer_on(false);
+        set_page_state("results");
     }
 
     // Update WPM, only when user input is correct
     function update_wpm(user_input){
         if (timer_state > (2 * timer_frequency_modulator)){
-            // Date: 2025-04-27, developer: PTang
-            // Goal: convert number_of_words to a relative decimal
-            // Why: Prevent Speed/WPM from jumping erratically when taking the typing test, / 0 errors, and INF with low values
-            // 1. alternate solution: make timer sample at faster intervals
-            // 2. alternate solution: make timer start at 3+ seconds instead of at 1 (>0)
             const input_word_list = user_input.trimEnd().split(" ")
             const prompt_word_list = book_prompt.split(" ")
             const last_word_index = input_word_list.length - 1
@@ -58,11 +105,11 @@ function Typing_Test_Root({ updateBookPrompt }){
             let last_word_completion_percent = numerator / denominator
             const number_of_words = input_word_list.length + (last_word_completion_percent - 1)
 
-            const minutes_elapsed = Math.round((timer_state / (60 * timer_frequency_modulator)) * 100) / 100
+            const minutes_elapsed = convert_current_timer_to_minutes_elapsed(timer_state);
             const new_wpm = Math.floor(number_of_words / minutes_elapsed)
             set_wpm(new_wpm)
 
-            console.log(`\tTimer ${timer_state}, WPM (words/min) ${new_wpm}`)
+            console.log(`\tRaw Timer Value: ${timer_state} (Minutes Elapsed: ${minutes_elapsed}), WPM: (words/min) ${new_wpm}`)
         }
     }
 
@@ -144,20 +191,35 @@ function Typing_Test_Root({ updateBookPrompt }){
         console.log("CI: " + user_input + " | book_prompt: " + book_prompt)
     }
 
-    return (
-    <div className="Typing_Test" id="UI">
-        <p id="prompt_display_box"> Typing Prompt Display Here </p>
+    function convert_current_timer_to_minutes_elapsed(timer_state){
+        // Note: Do not use for "real measurements" since 60 seconds in a minute make calculations difficult / prone to error
+        const _initial_rounding_decimal_places = 3
+        let _rounding_constant = 10**(_initial_rounding_decimal_places)
+        const minutes_elapsed = Math.round((timer_state / (60 * timer_frequency_modulator)) * _rounding_constant) / _rounding_constant // Round to THREE Decimal places
+        return minutes_elapsed;
+    }
 
-        <input type="text"
-            id="prompt_input_box"
-            placeholder="Type the sentence above here."
-            onChange={update_score}
-        />
-        <p>Speed: {wpm}</p>
-        <br/>
-        <p>Accuracy: {accuracy}</p>
-    </div>
-    ) // Return HTML tags
+    function update_total_seconds_elapsed(timer_state){
+        // Note: conversion exists due to base 60 unit of time for minutes vs the base 10 standard for seconds/ms with the base_sampling_rate and tfm
+        let total_ms_elapsed = timer_state * (base_sampling_rate / timer_frequency_modulator); // ms = samples * sampling ratio
+        let total_seconds_passed = Number(total_ms_elapsed / 1000).toFixed(2);
+        set_total_seconds_elapsed(total_seconds_passed);
+    }
+
+    function retake_test(){
+        reset_states()
+        set_page_state("typing_test")
+        update_book_prompt()
+    }
+
+    function reset_states(){
+        set_total_seconds_elapsed(0.0)
+        set_book_prompt("NA")
+        set_wpm('?')
+        set_accuracy('?')
+        set_mistakes(0)
+        set_match_flag(false)
+    }
 }
 
 export default Typing_Test_Root;

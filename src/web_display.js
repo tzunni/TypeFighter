@@ -64,6 +64,7 @@ class UI_Handler{
     update_book_UI(book){
         console.log(book)
         document.getElementById("prompt_display_box").innerHTML = this.book_handler.get_book_field_data(book, "first_sentence").value;
+        document.getElementById("prompt_display_box").style.color = "black"
 //        const typing_prompt_sentence = this.book_handler.get_book_field_data(book, "first_sentence").value;
 //        display_prompt.innerHTML = `${typing_prompt_sentence}<span class="blinking-cursor">|</span>`;
 
