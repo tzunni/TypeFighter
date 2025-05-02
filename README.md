@@ -1,8 +1,8 @@
 # TypeFighter
-A web application that measures and ranks users by their typing speed across the globe.
+A web application that gamifies the process of learning one's own typing speed and provides a leaderboard to see where one ranks.
 <br>
 
-## Overview (Planned Features)
+## Overview
 - Low Latency Accurate **WPM Measurement**
 - **Varied Text Displays** (Typing Prompts)
 - **Game Leaderboard** (Retro / Arcade Style)
@@ -11,8 +11,9 @@ Supported Versions:
 - Windows 11
 
 ## Install Dependencies <br>
-- `Flask`: 3.0.0
-- `React`: 19.0.0
+- `Python`: 3.11.9
+- `Flask`: 3.1.0
+- `React`: 19.1.0
 
 **1. Create Virtual Environment**
 ```powershell
@@ -34,14 +35,22 @@ pip install Flask
 
 **4. Install Node.js for React**
 
-- Be sure to restart your system after installing Node.js.
+- Be sure to restart your system after installing Node.js. Executable can be found on the Node.js website.
 
 **5. Update matching version**
 
 - Users may encounter the message "'react-scripts' is not recognized as an internal or external command" if the dependency versions are not matching.
 
+Update command:
 ```powershell
-npm install
+python.exe -m pip install --upgrade pip
+```
+
+Check version
+```powershell
+Flask --version
+npm version
+npm view react version
 ```
 
 ## Run Project
