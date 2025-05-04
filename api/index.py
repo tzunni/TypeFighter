@@ -130,4 +130,3 @@ def create_run():
 if __name__ == "__main__":
     with app.app_context():  # Needed for DB operations
         db.create_all()      # Creates the database and tables
-    app.run(debug=True)
