@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 # Load configuration from .env file
 config = dotenv_values(".env")
-PASSWORD = config.get("PASSWORD")
+POSTGRES_URL = config.get("POSTGRES_URL")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://neondb_owner:{PASSWORD}@ep-young-pine-a6ppwvc4-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require'
+app.config['SQLALCHEMY_DATABASE_URI'] = POSTGRES_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
