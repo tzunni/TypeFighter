@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Load configuration from .env file
 config = dotenv_values(".env")
-DATABASE_URL = config.get("DATABASE_URL")
+DATABASE_URL = config.get("DB_URL")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
