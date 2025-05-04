@@ -1,15 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from dotenv import dotenv_values
+import os
 
 
 app = Flask(__name__)
 
-# Load configuration from .env file
-config = dotenv_values(".env")
-DATABASE_URL = config.get("DB_URL")
-
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
