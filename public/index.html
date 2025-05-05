@@ -97,26 +97,7 @@
                 if (result.logged_in) {
                     const userId = result.user_id; // Assuming the session response includes the user ID
                     populatePlayerInfo(userId);
-<<<<<<< HEAD
                     populateLeaderboard(userId); // Populate leaderboard with user stats
-=======
-                    populateLeaderboard(userId); // Populate leaderboard
-
-                    // Replace "Sign In" and "Register" buttons with the username and logout button
-                    authContainer.innerHTML = `
-                        <div class="username-display">${result.username}</div>
-                        <button class="logout-button">Logout</button>
-                    `;
-
-                    // Attach event listener to the logout button
-                    document.querySelector('.logout-button').addEventListener('click', async () => {
-                        const response = await fetch('/logout', { method: 'POST' });
-                        if (response.ok) {
-                            alert('Logged out successfully');
-                            location.reload(); // Reload the page to reset the UI
-                        }
-                    });
->>>>>>> 4948a277f9b4487b186108f1a0cf7645791d045d
                 } else {
                     // Reset player info to filler data if not logged in
                     document.querySelector('.player-name').textContent = 'Guest User';
@@ -248,23 +229,12 @@
             }
         }
 
-<<<<<<< HEAD
         async function populateLeaderboard(userId = null) {
-=======
-        async function populateLeaderboard(userId) {
->>>>>>> 4948a277f9b4487b186108f1a0cf7645791d045d
             try {
                 // Fetch the leaderboard data
                 const leaderboardResponse = await fetch('/leaderboard', { method: 'GET' });
                 const leaderboardData = await leaderboardResponse.json();
 
-<<<<<<< HEAD
-=======
-                // Fetch the current user's stats
-                const userResponse = await fetch(`/player-info/${userId}`, { method: 'GET' });
-                const userData = await userResponse.json();
-
->>>>>>> 4948a277f9b4487b186108f1a0cf7645791d045d
                 // Populate the leaderboard
                 const leaderboardList = document.getElementById('leaderboard-list');
                 leaderboardList.innerHTML = ''; // Clear existing content
@@ -284,7 +254,6 @@
                     leaderboardList.appendChild(playerItem);
                 });
 
-<<<<<<< HEAD
                 // Populate the "You" section only if the user is logged in
                 const youSection = document.getElementById('you-section');
                 if (userId) {
@@ -305,20 +274,6 @@
                     // Clear the "You" section if the user is not logged in
                     youSection.innerHTML = '<div class="leaderboard-info">Log in to see your stats!</div>';
                 }
-=======
-                // Populate the "You" section
-                const youSection = document.getElementById('you-section');
-                youSection.innerHTML = `
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 10.3333L12 2L2 10.3333M22 22L12 13.6667L2 22" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <div class="leaderboard-info">
-                        <div class="leaderboard-name">You</div>
-                        <div class="leaderboard-score">${userData.speed_mean || '?'} WPM</div>
-                        <div class="leaderboard-rank">Rank: #${userData.rank || '?'}</div>
-                    </div>
-                `;
->>>>>>> 4948a277f9b4487b186108f1a0cf7645791d045d
             } catch (error) {
                 console.error('Error populating leaderboard:', error);
             }
