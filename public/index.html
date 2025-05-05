@@ -187,6 +187,11 @@
     </div>
     <script>
         const authContainer = document.querySelector('.auth'); // Container for auth buttons
+        const popup = document.getElementById('auth-popup');
+        const popupTitle = document.getElementById('popup-title'); // Moved outside for global access
+        const usernameGroup = document.getElementById('username-group');
+        const confirmPasswordGroup = document.getElementById('confirm-password-group');
+        const submitButton = document.querySelector('.submit-button');
 
         // Function to check session and update UI
         async function checkSession() {
@@ -208,12 +213,6 @@
 
         // Open the popup
         function openPopup(isRegistering) {
-            const popup = document.getElementById('auth-popup');
-            const popupTitle = document.getElementById('popup-title');
-            const usernameGroup = document.getElementById('username-group');
-            const confirmPasswordGroup = document.getElementById('confirm-password-group');
-            const submitButton = document.querySelector('.submit-button');
-
             popup.classList.remove('hidden');
             if (isRegistering) {
                 popupTitle.textContent = 'Register';
@@ -230,7 +229,6 @@
 
         // Close the popup
         function closePopup() {
-            const popup = document.getElementById('auth-popup');
             popup.classList.add('hidden');
         }
 
@@ -262,6 +260,7 @@
                 if (response.ok) {
                     alert(result.message);
                     closePopup();
+                    checkSession(); // Refresh the UI after registration
                 } else {
                     alert(result.error);
                 }
