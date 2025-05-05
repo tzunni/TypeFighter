@@ -124,6 +124,7 @@ def create_user():
     )
     
     db.session.add(new_user)
+    db.session.add(new_stat_cache)
     db.session.commit()
     
     return jsonify({
