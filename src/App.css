@@ -60,6 +60,35 @@
     font-size: 16px;
 }
 
+.hp-bar-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 30px;
+    background-color: #ccc; /* Gray background for the HP bar */
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    background-color: #4caf50; /* Green fill for the HP bar */
+    transition: width 0.3s ease; /* Smooth transition for HP changes */
+}
+
+.hp-bar-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+    line-height: 30px; /* Align text vertically */
+}
+
 #attack-button {
   width: 166px;
   display: flex;

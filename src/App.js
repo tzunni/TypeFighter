@@ -109,7 +109,18 @@ function App() {
                     {boss && (
                         <>
                             <img className="boss" src={boss.img_location} alt={boss.boss_name} />
-                            <div className="hp-bar">HP: {boss.current_hp}/{boss.max_hp}</div>
+                            <div className="hp-bar-container">
+                                <div
+                                    className="hp-bar-fill"
+                                    style={{
+                                        width: `${(boss.current_hp / boss.max_hp) * 100}%`,
+                                    }}
+                                ></div>
+                                <div className="hp-bar-text">
+                                    HP: {boss.current_hp}/{boss.max_hp} (
+                                    {Math.round((boss.current_hp / boss.max_hp) * 100)}%)
+                                </div>
+                            </div>
                             <button
                                 id="attack-button"
                                 onClick={async () => {
