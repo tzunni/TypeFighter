@@ -20,7 +20,7 @@
         </div>
         <div class="main" id="root">
         </div>
-        <div class="player-info hidden">
+        <div class="player-info">
             <div class="player-name">Guest User</div>
             <div class="player-rank">Rank #?</div>
             <div class="stats">
@@ -152,9 +152,6 @@
                             location.reload(); // Reload the page to reset the UI
                         }
                     });
-                } else {
-                    // Hide the player-info section
-                    playerInfo.classList.add('hidden');
                 }
             } catch (error) {
                 console.error('Error checking session:', error);
