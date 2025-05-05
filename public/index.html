@@ -98,12 +98,38 @@
                     const userId = result.user_id; // Assuming the session response includes the user ID
                     populatePlayerInfo(userId);
                     populateLeaderboard(userId); // Populate leaderboard with user stats
+
+                    // Update the auth container to show the username and logout button
+                    authContainer.innerHTML = `
+                        <div class="username-display">${result.username}</div>
+                        <button class="logout-button">Logout</button>
+                    `;
+
+                    // Attach event listener to the logout button
+                    document.querySelector('.logout-button').addEventListener('click', async () => {
+                        const response = await fetch('/logout', { method: 'POST' });
+                        if (response.ok) {
+                            alert('Logged out successfully');
+                            checkSession(); // Refresh the UI after logout
+                            location.reload(); // Reload the page to reset the UI
+                        }
+                    });
                 } else {
                     // Reset player info to filler data if not logged in
                     document.querySelector('.player-name').textContent = 'Guest User';
                     document.querySelector('.player-rank').textContent = 'Rank #?';
                     document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = '?%';
                     document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = '? WPM';
+
+                    // Update the auth container to show "Sign In" and "Register" buttons
+                    authContainer.innerHTML = `
+                        <div class="sign-in">Sign in</div>
+                        <div class="register">Register</div>
+                    `;
+
+                    // Reattach event listeners to the "Sign In" and "Register" buttons
+                    document.querySelector('.sign-in').addEventListener('click', () => openPopup(false));
+                    document.querySelector('.register').addEventListener('click', () => openPopup(true));
 
                     populateLeaderboard(); // Populate leaderboard without user stats
                 }
