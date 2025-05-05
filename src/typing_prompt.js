@@ -254,6 +254,7 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
                 console.log('Run uploaded successfully:', result);
             } else {
                 console.error('Error uploading run:', result.error);
+                console.log('response:', response);
             }
         } catch (error) {
             console.error('Error uploading run:', error);
