@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from 'react';
 
 // React Component
-function Typing_Test_Root({ update_book_prompt, route_home, promptId, source }) {
+function Typing_Test_Root({ update_book_prompt, route_home, promptId, source, onTestComplete }) {
     const [page_state, set_page_state] = useState("typing_test");
     const valid_states = ["typing_test", "results"];
     let current_page;
