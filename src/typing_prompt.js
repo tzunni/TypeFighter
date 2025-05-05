@@ -89,9 +89,23 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         set_accuracy(0)
     }
 
-    function stop_typing_test(){
+    function stop_typing_test() {
         set_timer_on(false);
         set_page_state("results");
+
+        // Check if the user is logged in
+        fetch('/session', { method: 'GET' })
+            .then(response => response.json())
+            .then(session => {
+                if (session.logged_in) {
+                    const userId = session.user_id; // Assuming session includes user_id
+                    const promptId = 1; // Replace with the actual prompt ID
+                    uploadRunStats(userId, wpm, accuracy, promptId);
+                } else {
+                    console.log('User is not logged in. Stats will not be uploaded.');
+                }
+            })
+            .catch(error => console.error('Error checking session:', error));
     }
 
     // Update WPM, only when user input is correct

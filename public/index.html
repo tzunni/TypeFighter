@@ -42,15 +42,6 @@
                         <div class="stat-value">100%</div>
                     </div>
                 </div>
-                <div class="stat">
-                    <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.6666 21.3333V16M16.6666 10.6667H16.68M30 16C30 23.3638 24.0304 29.3333 16.6666 29.3333C9.30283 29.3333 3.3333 23.3638 3.3333 16C3.3333 8.63621 9.30283 2.66667 16.6666 2.66667C24.0304 2.66667 30 8.63621 30 16Z" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <div class="stat-info">
-                        <div class="stat-title">Consistency</div>
-                        <div class="stat-value">100%</div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="leaderboard">
@@ -200,6 +191,9 @@
                 const result = await response.json();
 
                 if (result.logged_in) {
+                    const userId = result.user_id; // Assuming the session response includes the user ID
+                    populatePlayerInfo(userId);
+
                     // Replace "Sign In" and "Register" buttons with the username and logout button
                     authContainer.innerHTML = `
                         <div class="username-display">${result.username}</div>
@@ -307,6 +301,25 @@
                 }
             }
         });
+
+        async function populatePlayerInfo(userId) {
+            try {
+                const response = await fetch(`/player-info/${userId}`, { method: 'GET' });
+                const playerData = await response.json();
+
+                if (response.ok) {
+                    // Update the player-info section
+                    document.querySelector('.player-name').textContent = `Player${userId}`;
+                    document.querySelector('.player-rank').textContent = `Rank #${playerData.rank}`;
+                    document.querySelector('.stat-info .stat-title:nth-child(1) .stat-value').textContent = `${playerData.accuracy_mean}%`;
+                    document.querySelector('.stat-info .stat-title:nth-child(2) .stat-value').textContent = `${playerData.speed_mean} WPM`;
+                } else {
+                    console.error('Error fetching player info:', playerData.error);
+                }
+            } catch (error) {
+                console.error('Error fetching player info:', error);
+            }
+        }
     </script>
 </body>
 </html>

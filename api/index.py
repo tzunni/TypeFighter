@@ -46,11 +46,13 @@ class Boss(db.Model):
     def __repr__(self):
         return f'<Boss {self.boss_name}>'
 
-class stat_cache(db.Model):
+class Stat_cache(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     speed_mean = db.Column(db.Integer, nullable=False)
     accuracy_mean = db.Column(db.Integer, nullable=False)
     
+
+
 @app.route('/register', methods=['POST'])
 def register_user():
     data = request.get_json()
@@ -135,7 +137,7 @@ def create_run():
     data = request.get_json()
     if not data or not all(key in data for key in ('user_id', 'wpm', 'accuracy', 'prompt_id', 'run_time')):
         return jsonify({'error': 'Missing data'}), 400
-    
+
     new_run = Runs(
         user_id=data['user_id'],
         wpm=data['wpm'],
@@ -143,18 +145,11 @@ def create_run():
         prompt_id=data['prompt_id'],
         run_time=data['run_time']
     )
-    
+
     db.session.add(new_run)
     db.session.commit()
-    
-    return jsonify({
-        'run_id': new_run.run_id,
-        'user_id': new_run.user_id,
-        'wpm': new_run.wpm,
-        'accuracy': new_run.accuracy,
-        'prompt_id': new_run.prompt_id,
-        'run_time': new_run.run_time
-    }), 201
+
+    return jsonify({'message': 'Run uploaded successfully', 'run_id': new_run.run_id}), 201
 
 @app.route('/session', methods=['GET'])
 def check_session():
