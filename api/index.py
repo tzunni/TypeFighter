@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -79,7 +79,7 @@ def login_user():
 
     user = Users.query.filter_by(email=data['email']).first()
     if user and user.pw_hash == data['password']:  # In production, compare hashed passwords
-        return jsonify({'message': 'Login successful', 'username': user.user_name}), 200
+        return jsonify({'message': 'Login successful'}), 200
     else:
         return jsonify({'error': 'Invalid email or password'}), 401
 
@@ -154,6 +154,14 @@ def create_run():
         'prompt_id': new_run.prompt_id,
         'run_time': new_run.run_time
     }), 201
+
+@app.route('/session', methods=['GET'])
+def check_session():
+    # Simulate session check (replace with actual session logic)
+    user = session.get('user')  # Assuming you store the user in the session
+    if user:
+        return jsonify({'logged_in': True, 'username': user['username']}), 200
+    return jsonify({'logged_in': False}), 200
 
 if __name__ == "__main__":
     with app.app_context():  # Needed for DB operations

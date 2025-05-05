@@ -186,15 +186,34 @@
         </div>
     </div>
     <script>
-        const popup = document.getElementById('auth-popup');
-        const popupTitle = document.getElementById('popup-title');
-        const usernameGroup = document.getElementById('username-group');
-        const confirmPasswordGroup = document.getElementById('confirm-password-group');
-        const submitButton = document.querySelector('.submit-button');
         const authContainer = document.querySelector('.auth'); // Container for auth buttons
+
+        // Function to check session and update UI
+        async function checkSession() {
+            try {
+                const response = await fetch('/session', { method: 'GET' });
+                const result = await response.json();
+
+                if (result.logged_in) {
+                    // Replace "Sign In" and "Register" buttons with the username
+                    authContainer.innerHTML = `<div class="username-display">${result.username}</div>`;
+                }
+            } catch (error) {
+                console.error('Error checking session:', error);
+            }
+        }
+
+        // Call checkSession on page load
+        document.addEventListener('DOMContentLoaded', checkSession);
 
         // Open the popup
         function openPopup(isRegistering) {
+            const popup = document.getElementById('auth-popup');
+            const popupTitle = document.getElementById('popup-title');
+            const usernameGroup = document.getElementById('username-group');
+            const confirmPasswordGroup = document.getElementById('confirm-password-group');
+            const submitButton = document.querySelector('.submit-button');
+
             popup.classList.remove('hidden');
             if (isRegistering) {
                 popupTitle.textContent = 'Register';
@@ -211,6 +230,7 @@
 
         // Close the popup
         function closePopup() {
+            const popup = document.getElementById('auth-popup');
             popup.classList.add('hidden');
         }
 
