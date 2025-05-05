@@ -107,8 +107,8 @@ function App() {
                             <button
                                 id="attack-button"
                                 onClick={async () => {
-                                    const updatedBoss = await attackBoss(10); // Example: Deal 10 damage
-                                    setBoss(updatedBoss);
+                                    set_page_state("typing_test");
+                                    update_book_prompt();
                                 }}
                                 disabled={boss.dead}
                             >
