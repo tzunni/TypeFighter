@@ -179,7 +179,7 @@
                 if (response.ok) {
                     alert(result.message);
                     closePopup();
-
+                    checkSession(); // Refresh the UI after login
                     // Replace "Sign In" and "Register" buttons with the username and logout button
                     authContainer.innerHTML = `
                         <div class="username-display">${result.username}</div>
@@ -191,6 +191,7 @@
                         const response = await fetch('/logout', { method: 'POST' });
                         if (response.ok) {
                             alert('Logged out successfully');
+                            checkSession(); // Refresh the UI after logout
                             location.reload(); // Reload the page to reset the UI
                         }
                     });
