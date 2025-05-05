@@ -1,5 +1,6 @@
 import os
 import random
+import bcrypt  # Import bcrypt
 from flask import Flask, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 
@@ -65,9 +66,12 @@ def register_user():
     if Users.query.filter_by(email=data['email']).first():
         return jsonify({'error': 'Email already registered'}), 400
 
+    # Hash the password
+    hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+
     new_user = Users(
         user_name=data['user_name'],
-        pw_hash=data['password'],  # In production, hash the password using a library like bcrypt
+        pw_hash=hashed_password.decode('utf-8'),  # Store the hashed password as a string
         email=data['email']
     )
     db.session.add(new_user)
@@ -82,7 +86,7 @@ def login_user():
         return jsonify({'error': 'Missing data'}), 400
 
     user = Users.query.filter_by(email=data['email']).first()
-    if user and user.pw_hash == data['password']:  # In production, compare hashed passwords
+    if user and bcrypt.checkpw(data['password'].encode('utf-8'), user.pw_hash.encode('utf-8')):  # Verify the hashed password
         session['user'] = {'user_id': user.user_id, 'username': user.user_name}
         return jsonify({'message': 'Login successful', 'username': user.user_name}), 200
     else:
