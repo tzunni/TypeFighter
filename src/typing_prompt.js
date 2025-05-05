@@ -67,6 +67,7 @@ function Typing_Test_Root({ update_book_prompt, route_home, promptId }) {
                     <p>Final WPM: {wpm}</p>
                     <p>Accuracy: {accuracy}%</p>
                     <p>Total Mistakes: {mistakes} incorrect characters</p>
+                    <p>Prompt: {source}</p>
                     <button onClick={retake_test}>Retake Test</button>
                     <button onClick={route_home}>Return Home</button>
                 </div>
