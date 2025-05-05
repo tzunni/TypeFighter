@@ -260,9 +260,19 @@
                     document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = `${playerData.speed_mean || '?'} WPM`;
                 } else {
                     console.error('Error fetching player info:', playerData.error);
+                    // Display fallback values
+                    document.querySelector('.player-name').textContent = 'Guest User';
+                    document.querySelector('.player-rank').textContent = 'Rank #?';
+                    document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = '?%';
+                    document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = '? WPM';
                 }
             } catch (error) {
                 console.error('Error fetching player info:', error);
+                // Display fallback values
+                document.querySelector('.player-name').textContent = 'Guest User';
+                document.querySelector('.player-rank').textContent = 'Rank #?';
+                document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = '?%';
+                document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = '? WPM';
             }
         }
     </script>
