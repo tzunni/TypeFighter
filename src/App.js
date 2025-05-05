@@ -63,6 +63,7 @@ function App() {
     const [source, setSource] = useState(null);
     const [boss, setBoss] = useState(null);
 
+    // Fetch boss data when the app loads
     useEffect(() => {
         async function loadBossData() {
             const bossData = await fetchBossData();
@@ -71,11 +72,16 @@ function App() {
         loadBossData();
     }, []);
 
+    // Fetch boss data whenever the page_state changes to "home"
     useEffect(() => {
-        if (boss && boss.dead) {
-            console.log('The boss has been defeated!');
+        if (page_state === "home") {
+            async function reloadBossData() {
+                const bossData = await fetchBossData();
+                setBoss(bossData);
+            }
+            reloadBossData();
         }
-    }, [boss]);
+    }, [page_state]);
 
     const update_book_prompt = async () => {
         const response = await fetch('/random-prompt', { method: 'GET' });
