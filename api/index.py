@@ -88,6 +88,7 @@ def login_user():
         return jsonify({'error': 'Invalid email or password'}), 401
 
 @app.route('/users/<int:user_id>', methods=['GET'])
+
 def get_user(user_id):
     user = db.session.get(Users, user_id)  # Use db.session.get()
     if user:

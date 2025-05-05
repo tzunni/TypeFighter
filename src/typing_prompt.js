@@ -94,13 +94,16 @@ function Typing_Test_Root({ update_book_prompt, route_home, promptId, source }) 
         set_timer_on(false);
         set_page_state("results");
 
+        // Get the latest accuracy value
+        const finalAccuracy = accuracy; // Use the current accuracy state
+
         // Check if the user is logged in
         fetch('/session', { method: 'GET' })
             .then(response => response.json())
             .then(session => {
                 if (session.logged_in) {
                     const userId = session.user_id; // Retrieve user ID from session
-                    uploadRunStats(userId, wpm, accuracy, promptId); // Use the actual prompt ID
+                    uploadRunStats(userId, wpm, finalAccuracy, promptId); // Pass the final accuracy directly
                 } else {
                     console.log('User is not logged in. Stats will not be uploaded.');
                 }
