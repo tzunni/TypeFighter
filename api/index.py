@@ -246,12 +246,34 @@ def get_player_info(user_id):
     if not stat:
         return jsonify({'error': 'Player stats not found'}), 404
 
+    # Calculate rank based on speed_mean
+    rank = Stat_cache.query.filter(Stat_cache.speed_mean > stat.speed_mean).count() + 1
+
     return jsonify({
         'username': session.get('user', {}).get('username', 'Guest'),
         'accuracy_mean': stat.accuracy_mean,
         'speed_mean': stat.speed_mean,
-        'rank': 234  # Replace with actual rank logic if available
+        'rank': rank
     }), 200
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    try:
+        # Fetch the top 3 players sorted by speed_mean in descending order
+        top_players = Stat_cache.query.order_by(Stat_cache.speed_mean.desc()).limit(3).all()
+
+        leaderboard = []
+        for player in top_players:
+            user = Users.query.filter_by(user_id=player.user_id).first()
+            leaderboard.append({
+                'username': user.user_name,
+                'speed_mean': player.speed_mean,
+                'accuracy_mean': player.accuracy_mean
+            })
+
+        return jsonify(leaderboard), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     with app.app_context():  # Needed for DB operations
