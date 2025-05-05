@@ -12,18 +12,18 @@ db = SQLAlchemy(app)
 
 # Define our database models
 class Users(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True, identity=True)
-    user_name = db.Column(db.String, unique=True, nullable=False)
-    pw_hash = db.Column(db.String, unique=False, nullable=False)
-    email = db.Column(db.String, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(20), unique=False, nullable=False)
+    pw_hash = db.Column(db.String(20), unique=False, nullable=False)
+    email = db.Column(db.String(20), unique=False, nullable=False)
     def __repr__(self):
         return f'<User {self.user_name}>'
 
 class Prompts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    prompt = db.Column(db.String, unique=False, nullable=False)
+    prompt = db.Column(db.String(200), unique=False, nullable=False)
     difficulty = db.Column(db.Integer, unique=False, nullable=False)
-    source = db.Column(db.String, unique=False, nullable=False)
+    source = db.Column(db.String(100), unique=False, nullable=False)
     def __repr__(self):
         return f'<Prompt {self.prompt_text}>'
 
@@ -37,20 +37,20 @@ class Runs(db.Model):
     def __repr__(self):
         return f'<Run {self.run_id}>'
 
-class Bosses(db.Model):
+class Boss(db.Model):
     boss_id = db.Column(db.Integer, primary_key=True)
+    boss_name = db.Column(db.String(20), unique=False, nullable=False)
     current_hp = db.Column(db.Integer, unique=False, nullable=False)
-    image_location = db.Column(db.String, unique=False, nullable=False)
+    img_location = db.Column(db.String(100), unique=False, nullable=False)
     dead = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     max_hp = db.Column(db.Integer, unique=False, nullable=False)
-    boss_name = db.Column(db.String, unique=False, nullable=False)
     def __repr__(self):
         return f'<Boss {self.boss_name}>'
 
 class Stat_cache(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True, nullable=False)
-    speed_mean = db.Column(db.Integer)
-    accuracy_mean = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    speed_mean = db.Column(db.Integer, nullable=False)
+    accuracy_mean = db.Column(db.Integer, nullable=False)
     
 
 
