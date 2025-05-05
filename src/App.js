@@ -59,8 +59,8 @@ async function attackBoss(damage) {
 
 function App() {
     const [page_state, set_page_state] = useState("home");
-    const [promptId, setPromptId] = useState(null); // Add state for prompt ID
-    const [source, setSource] = useState(null); // Add state for source
+    const [promptId, setPromptId] = useState(null);
+    const [source, setSource] = useState(null);
     const [boss, setBoss] = useState(null);
 
     useEffect(() => {
@@ -83,13 +83,19 @@ function App() {
 
         if (response.ok) {
             console.log('Random Prompt:', result);
-            setPromptId(result.id); // Store the prompt ID
-            setSource(result.source); // Store the source
+            setPromptId(result.id);
+            setSource(result.source);
             document.getElementById('prompt_display_box').textContent = result.prompt;
         } else {
             console.error('Error fetching random prompt:', result.error);
             document.getElementById('prompt_display_box').textContent = 'Error fetching prompt';
         }
+    };
+
+    const handleTestComplete = async (wpm) => {
+        console.log(`Test complete! WPM: ${wpm}`);
+        const updatedBoss = await attackBoss(wpm); // Attack the boss with the player's WPM
+        setBoss(updatedBoss); // Update the boss state in the home page
     };
 
     let current_page;
@@ -124,8 +130,9 @@ function App() {
                 <Typing_Test_Root
                     update_book_prompt={update_book_prompt}
                     route_home={() => set_page_state("home")}
-                    promptId={promptId} // Pass the prompt ID to the component
-                    source={source} // Pass the source to the component
+                    promptId={promptId}
+                    source={source}
+                    onTestComplete={handleTestComplete} // Pass the handler to Typing_Test_Root
                 />
             );
             break;

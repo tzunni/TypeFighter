@@ -108,6 +108,7 @@ function Typing_Test_Root({ update_book_prompt, route_home, promptId, source }) 
                     // Attack the boss with the player's WPM
                     const updatedBoss = await attackBoss(wpm);
                     console.log('Boss updated after attack:', updatedBoss);
+                    onTestComplete(wpm); // Call the function passed from the home page
                 } else {
                     console.log('User is not logged in. Stats will not be uploaded.');
                 }
