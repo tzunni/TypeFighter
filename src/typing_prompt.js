@@ -237,16 +237,20 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
     
     async function uploadRunStats(userId, wpm, accuracy, promptId) {
         try {
+            const runData = {
+                user_id: userId,
+                wpm: wpm,
+                accuracy: accuracy,
+                prompt_id: promptId,
+                run_time: new Date().toISOString()
+            };
+
+            console.log('Uploading run stats:', runData); // Debugging log
+
             const response = await fetch('/runs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: userId,
-                    wpm: wpm,
-                    accuracy: accuracy,
-                    prompt_id: promptId,
-                    run_time: new Date().toISOString() // Current timestamp
-                })
+                body: JSON.stringify(runData)
             });
 
             const result = await response.json();
