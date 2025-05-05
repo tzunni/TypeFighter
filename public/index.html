@@ -173,6 +173,10 @@
                     <input type="email" id="email" placeholder="Enter your email" required />
                 </div>
                 <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="username" id="username" placeholder="Enter your username" required />
+              </div>
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="Enter your password" required />
                 </div>
@@ -222,6 +226,7 @@
             e.preventDefault();
             const user_name = document.getElementById('username').value;
             const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             if (popupTitle.textContent === 'Register') {
