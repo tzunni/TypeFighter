@@ -162,6 +162,7 @@ def create_run():
     if not data or not all(key in data for key in ('user_id', 'wpm', 'accuracy', 'prompt_id', 'run_time')):
         return jsonify({'error': 'Missing data'}), 400
 
+    # Add the new run to the Runs table
     new_run = Runs(
         user_id=data['user_id'],
         wpm=data['wpm'],
@@ -169,11 +170,48 @@ def create_run():
         prompt_id=data['prompt_id'],
         run_time=data['run_time']
     )
-
     db.session.add(new_run)
     db.session.commit()
 
+    # Recalculate stats for the user
+    user_id = data['user_id']
+    recalculate_stats(user_id)
+
     return jsonify({'message': 'Run uploaded successfully', 'run_id': new_run.run_id}), 201
+
+
+def recalculate_stats(user_id):
+    # Fetch all runs for the user
+    runs = Runs.query.filter_by(user_id=user_id).all()
+
+    if not runs:
+        return
+
+    # Recalculate stats
+    total_runs = len(runs)
+    total_wpm = sum(run.wpm for run in runs)
+    total_accuracy = sum(run.accuracy for run in runs)
+
+    average_wpm = total_wpm // total_runs
+    average_accuracy = total_accuracy // total_runs
+
+    # Check if the user already has a row in stat_cache
+    stat_cache_entry = Stat_cache.query.filter_by(user_id=user_id).first()
+
+    if stat_cache_entry:
+        # Update existing row
+        stat_cache_entry.speed_mean = average_wpm
+        stat_cache_entry.accuracy_mean = average_accuracy
+    else:
+        # Create a new row
+        new_stat_cache_entry = Stat_cache(
+            user_id=user_id,
+            speed_mean=average_wpm,
+            accuracy_mean=average_accuracy
+        )
+        db.session.add(new_stat_cache_entry)
+
+    db.session.commit()
 
 @app.route('/session', methods=['GET'])
 def check_session():
@@ -190,6 +228,18 @@ def check_session():
 def logout_user():
     session.pop('user', None)  # Remove user data from the session
     return jsonify({'message': 'Logged out successfully'}), 200
+
+@app.route('/player-info/<int:user_id>', methods=['GET'])
+def get_player_info(user_id):
+    stat = Stat_cache.query.filter_by(user_id=user_id).first()
+    if not stat:
+        return jsonify({'error': 'Player stats not found'}), 404
+
+    return jsonify({
+        'accuracy_mean': stat.accuracy_mean,
+        'speed_mean': stat.speed_mean,
+        'rank': 234  # Replace with actual rank logic if available
+    }), 200
 
 if __name__ == "__main__":
     with app.app_context():  # Needed for DB operations
