@@ -254,7 +254,7 @@
 
                 if (response.ok) {
                     // Replace the filler data with actual data
-                    document.querySelector('.player-name').textContent = `Player${userId}`;
+                    document.querySelector('.player-name').textContent = playerData.username || `Player${userId}`;
                     document.querySelector('.player-rank').textContent = `Rank #${playerData.rank || '?'}`;
                     document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = `${playerData.accuracy_mean || '?'}%`;
                     document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = `${playerData.speed_mean || '?'} WPM`;

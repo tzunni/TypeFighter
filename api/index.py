@@ -247,6 +247,7 @@ def get_player_info(user_id):
         return jsonify({'error': 'Player stats not found'}), 404
 
     return jsonify({
+        'username': session.get('user', {}).get('username', 'Guest'),
         'accuracy_mean': stat.accuracy_mean,
         'speed_mean': stat.speed_mean,
         'rank': 234  # Replace with actual rank logic if available
