@@ -129,14 +129,9 @@
                 const response = await fetch('/session', { method: 'GET' });
                 const result = await response.json();
 
-                const playerInfo = document.querySelector('.player-info'); // Select the player-info section
-
                 if (result.logged_in) {
                     const userId = result.user_id; // Assuming the session response includes the user ID
                     populatePlayerInfo(userId);
-
-                    // Show the player-info section
-                    playerInfo.classList.remove('hidden');
 
                     // Replace "Sign In" and "Register" buttons with the username and logout button
                     authContainer.innerHTML = `
@@ -152,6 +147,12 @@
                             location.reload(); // Reload the page to reset the UI
                         }
                     });
+                } else {
+                    // Reset player info to filler data if not logged in
+                    document.querySelector('.player-name').textContent = 'Guest User';
+                    document.querySelector('.player-rank').textContent = 'Rank #?';
+                    document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = '?%';
+                    document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = '? WPM';
                 }
             } catch (error) {
                 console.error('Error checking session:', error);
@@ -252,7 +253,7 @@
                 const playerData = await response.json();
 
                 if (response.ok) {
-                    // Update the player-info section with data from stat_cache
+                    // Replace the filler data with actual data
                     document.querySelector('.player-name').textContent = `Player${userId}`;
                     document.querySelector('.player-rank').textContent = `Rank #${playerData.rank || '?'}`;
                     document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = `${playerData.accuracy_mean || '?'}%`;
