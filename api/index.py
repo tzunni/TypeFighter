@@ -165,26 +165,30 @@ def get_random_prompt():
 
 @app.route('/runs', methods=['POST'])
 def create_run():
-    data = request.get_json()
-    if not data or not all(key in data for key in ('user_id', 'wpm', 'accuracy', 'prompt_id', 'run_time')):
-        return jsonify({'error': 'Missing data'}), 400
+    try:
+        data = request.get_json()
+        if not data or not all(key in data for key in ('user_id', 'wpm', 'accuracy', 'prompt_id', 'run_time')):
+            return jsonify({'error': 'Missing data'}), 400
 
-    # Add the new run to the Runs table
-    new_run = Runs(
-        user_id=data['user_id'],
-        wpm=data['wpm'],
-        accuracy=data['accuracy'],
-        prompt_id=data['prompt_id'],
-        run_time=data['run_time']
-    )
-    db.session.add(new_run)
-    db.session.commit()
+        # Add the new run to the Runs table
+        new_run = Runs(
+            user_id=data['user_id'],
+            wpm=data['wpm'],
+            accuracy=data['accuracy'],
+            prompt_id=data['prompt_id'],
+            run_time=data['run_time']
+        )
+        db.session.add(new_run)
+        db.session.commit()
 
-    # Recalculate stats for the user
-    user_id = data['user_id']
-    recalculate_stats(user_id)
+        # Recalculate stats for the user
+        recalculate_stats(data['user_id'])
 
-    return jsonify({'message': 'Run uploaded successfully', 'run_id': new_run.run_id}), 201
+        return jsonify({'message': 'Run uploaded successfully', 'run_id': new_run.run_id}), 201
+    except Exception as e:
+        # Log the error and return a JSON response
+        print(f"Error in /runs: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 def recalculate_stats(user_id):
