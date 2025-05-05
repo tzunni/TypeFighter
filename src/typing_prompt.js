@@ -234,6 +234,31 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         set_mistakes(0)
         set_match_flag(false)
     }
+    
+    async function uploadRunStats(userId, wpm, accuracy, promptId) {
+        try {
+            const response = await fetch('/runs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    wpm: wpm,
+                    accuracy: accuracy,
+                    prompt_id: promptId,
+                    run_time: new Date().toISOString() // Current timestamp
+                })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                console.log('Run uploaded successfully:', result);
+            } else {
+                console.error('Error uploading run:', result.error);
+            }
+        } catch (error) {
+            console.error('Error uploading run:', error);
+        }
+    }
 }
 
 export default Typing_Test_Root;

@@ -320,31 +320,6 @@
                 console.error('Error fetching player info:', error);
             }
         }
-
-        async function uploadRunStats(userId, wpm, accuracy, promptId) {
-            try {
-                const response = await fetch('/runs', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: userId,
-                        wpm: wpm,
-                        accuracy: accuracy,
-                        prompt_id: promptId,
-                        run_time: new Date().toISOString() // Current timestamp
-                    })
-                });
-
-                const result = await response.json();
-                if (response.ok) {
-                    console.log('Run uploaded successfully:', result);
-                } else {
-                    console.error('Error uploading run:', result.error);
-                }
-            } catch (error) {
-                console.error('Error uploading run:', error);
-            }
-        }
     </script>
 </body>
 </html>
