@@ -79,7 +79,7 @@ def login_user():
 
     user = Users.query.filter_by(email=data['email']).first()
     if user and user.pw_hash == data['password']:  # In production, compare hashed passwords
-        return jsonify({'message': 'Login successful'}), 200
+        return jsonify({'message': 'Login successful', 'username': user.user_name}), 200
     else:
         return jsonify({'error': 'Invalid email or password'}), 401
 
