@@ -1,4 +1,5 @@
 import os
+import random
 from flask import Flask, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 
@@ -131,6 +132,29 @@ def get_prompt(id):
         }), 200
     else:
         return jsonify({'error': 'Prompt not found'}), 404
+
+@app.route('/random-prompt', methods=['GET'])
+def get_random_prompt():
+    try:
+        # Get the total number of prompts
+        total_prompts = Prompts.query.count()
+        if total_prompts == 0:
+            return jsonify({'error': 'No prompts available'}), 404
+
+        # Select a random offset
+        random_offset = random.randint(0, total_prompts - 1)
+
+        # Fetch the random prompt
+        random_prompt = Prompts.query.offset(random_offset).first()
+
+        return jsonify({
+            'id': random_prompt.id,
+            'prompt': random_prompt.prompt,
+            'difficulty': random_prompt.difficulty,
+            'source': random_prompt.source
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/runs', methods=['POST'])
 def create_run():

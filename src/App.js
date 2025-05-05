@@ -1,14 +1,33 @@
 import React, {useState} from 'react';
 import './App.css';
 import Typing_Test_Root from './typing_prompt.js';
-import ui_handler from './web_display.js'
+import ui_handler from './web_display.js';
+
+async function fetchRandomPrompt() {
+    try {
+        const response = await fetch('/random-prompt', { method: 'GET' });
+        const result = await response.json();
+
+        if (response.ok) {
+            console.log('Random Prompt:', result);
+            return result.prompt; // Return the prompt text
+        } else {
+            console.error('Error fetching random prompt:', result.error);
+            return 'Error fetching prompt';
+        }
+    } catch (error) {
+        console.error('Error fetching random prompt:', error);
+        return 'Error fetching prompt';
+    }
+}
 
 function App() {
     const [page_state, set_page_state] = useState("home");
-    const valid_states = ["home", "typing_test"]
+    const valid_states = ["home", "typing_test"];
 
     const update_book_prompt = async () => {
-        ui_handler.get_book_data('OL7353617M');
+        const randomPrompt = await fetchRandomPrompt();
+        document.getElementById('prompt_display_box').textContent = randomPrompt;
     };
 
     let current_page;
@@ -32,7 +51,7 @@ function App() {
                 </button>
             </div> // end home
             );
-            break
+            break;
         case "typing_test":
             current_page = <Typing_Test_Root
                 update_book_prompt={update_book_prompt}
