@@ -112,6 +112,12 @@ def create_user():
         email=data['email']
     )
     
+    new_stat_cache = Stat_cache(
+        user_id=new_user.user_id,
+        speed_mean=0,  # Default value
+        accuracy_mean=0  # Default value
+    )
+    
     db.session.add(new_user)
     db.session.commit()
     
