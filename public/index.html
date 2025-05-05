@@ -47,47 +47,12 @@
         <div class="leaderboard">
             <div class="leaderboard-title">Leaderboard</div>
             <div class="leaderboard-divider"></div>
-            <div class="leaderboard-list">
-                <div class="leaderboard-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 1.66667L12.575 6.88333L18.3334 7.725L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.725L7.42502 6.88333L10 1.66667Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <div class="leaderboard-info">
-                        <div class="leaderboard-name">Player123</div>
-                        <div class="leaderboard-score">100 WPM</div>
-                    </div>
-                </div>
-                <div class="leaderboard-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 1.66666L12.575 6.88333L18.3334 7.725L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.725L7.42502 6.88333L10 1.66666Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <div class="leaderboard-info">
-                        <div class="leaderboard-name">Player234</div>
-                        <div class="leaderboard-score">75 WPM</div>
-                    </div>
-                </div>
-                <div class="leaderboard-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 1.66667L12.575 6.88334L18.3334 7.72501L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.72501L7.42502 6.88334L10 1.66667Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <div class="leaderboard-info">
-                        <div class="leaderboard-name">Player345</div>
-                        <div class="leaderboard-score">50 WPM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="see-more">
-                <a class="see-more-button">See More</button>
+            <div id="leaderboard-list" class="leaderboard-list">
+                <!-- Top 3 players will be dynamically inserted here -->
             </div>
             <div class="leaderboard-divider"></div>
-            <div class="leaderboard-item">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 10.3333L12 2L2 10.3333M22 22L12 13.6667L2 22" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">234. You</div>
-                    <div class="leaderboard-score">35 WPM</div>
-                </div>
+            <div id="you-section" class="leaderboard-item">
+                <!-- "You" section will be dynamically updated -->
             </div>
         </div>
     <div id="auth-popup" class="popup-overlay hidden">
@@ -132,6 +97,7 @@
                 if (result.logged_in) {
                     const userId = result.user_id; // Assuming the session response includes the user ID
                     populatePlayerInfo(userId);
+                    populateLeaderboard(userId); // Populate leaderboard
 
                     // Replace "Sign In" and "Register" buttons with the username and logout button
                     authContainer.innerHTML = `
@@ -273,6 +239,52 @@
                 document.querySelector('.player-rank').textContent = 'Rank #?';
                 document.querySelectorAll('.stat-info')[0].querySelector('.stat-value').textContent = '?%';
                 document.querySelectorAll('.stat-info')[1].querySelector('.stat-value').textContent = '? WPM';
+            }
+        }
+
+        async function populateLeaderboard(userId) {
+            try {
+                // Fetch the leaderboard data
+                const leaderboardResponse = await fetch('/leaderboard', { method: 'GET' });
+                const leaderboardData = await leaderboardResponse.json();
+
+                // Fetch the current user's stats
+                const userResponse = await fetch(`/player-info/${userId}`, { method: 'GET' });
+                const userData = await userResponse.json();
+
+                // Populate the leaderboard
+                const leaderboardList = document.getElementById('leaderboard-list');
+                leaderboardList.innerHTML = ''; // Clear existing content
+
+                leaderboardData.forEach((player, index) => {
+                    const playerItem = document.createElement('div');
+                    playerItem.className = 'leaderboard-item';
+                    playerItem.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 1.66667L12.575 6.88333L18.3334 7.725L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.725L7.42502 6.88333L10 1.66667Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${index + 1}. ${player.username}</div>
+                            <div class="leaderboard-score">${player.speed_mean} WPM</div>
+                        </div>
+                    `;
+                    leaderboardList.appendChild(playerItem);
+                });
+
+                // Populate the "You" section
+                const youSection = document.getElementById('you-section');
+                youSection.innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 10.3333L12 2L2 10.3333M22 22L12 13.6667L2 22" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">You</div>
+                        <div class="leaderboard-score">${userData.speed_mean || '?'} WPM</div>
+                        <div class="leaderboard-rank">Rank: #${userData.rank || '?'}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error populating leaderboard:', error);
             }
         }
     </script>
