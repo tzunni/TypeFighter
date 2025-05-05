@@ -1,9 +1,9 @@
+import os
 from flask import Flask, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
-import os
-
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -79,6 +79,7 @@ def login_user():
 
     user = Users.query.filter_by(email=data['email']).first()
     if user and user.pw_hash == data['password']:  # In production, compare hashed passwords
+        session['user'] = {'user_id': user.user_id, 'username': user.user_name}
         return jsonify({'message': 'Login successful', 'username': user.user_name}), 200
     else:
         return jsonify({'error': 'Invalid email or password'}), 401
@@ -157,11 +158,15 @@ def create_run():
 
 @app.route('/session', methods=['GET'])
 def check_session():
-    # Simulate session check (replace with actual session logic)
-    user = session.get('user')  # Assuming you store the user in the session
+    user = session.get('user')  # Check if user data exists in the session
     if user:
         return jsonify({'logged_in': True, 'username': user['username']}), 200
     return jsonify({'logged_in': False}), 200
+
+@app.route('/logout', methods=['POST'])
+def logout_user():
+    session.pop('user', None)  # Remove user data from the session
+    return jsonify({'message': 'Logged out successfully'}), 200
 
 if __name__ == "__main__":
     with app.app_context():  # Needed for DB operations

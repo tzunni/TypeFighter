@@ -200,8 +200,20 @@
                 const result = await response.json();
 
                 if (result.logged_in) {
-                    // Replace "Sign In" and "Register" buttons with the username
-                    authContainer.innerHTML = `<div class="username-display">${result.username}</div>`;
+                    // Replace "Sign In" and "Register" buttons with the username and logout button
+                    authContainer.innerHTML = `
+                        <div class="username-display">${result.username}</div>
+                        <button class="logout-button">Logout</button>
+                    `;
+
+                    // Attach event listener to the logout button
+                    document.querySelector('.logout-button').addEventListener('click', async () => {
+                        const response = await fetch('/logout', { method: 'POST' });
+                        if (response.ok) {
+                            alert('Logged out successfully');
+                            location.reload(); // Reload the page to reset the UI
+                        }
+                    });
                 }
             } catch (error) {
                 console.error('Error checking session:', error);
@@ -276,8 +288,20 @@
                     alert(result.message);
                     closePopup();
 
-                    // Replace "Sign In" and "Register" buttons with the username
-                    authContainer.innerHTML = `<div class="username-display">${result.username}</div>`;
+                    // Replace "Sign In" and "Register" buttons with the username and logout button
+                    authContainer.innerHTML = `
+                        <div class="username-display">${result.username}</div>
+                        <button class="logout-button">Logout</button>
+                    `;
+
+                    // Attach event listener to the logout button
+                    document.querySelector('.logout-button').addEventListener('click', async () => {
+                        const response = await fetch('/logout', { method: 'POST' });
+                        if (response.ok) {
+                            alert('Logged out successfully');
+                            location.reload(); // Reload the page to reset the UI
+                        }
+                    });
                 } else {
                     alert(result.error);
                 }
@@ -286,4 +310,3 @@
     </script>
 </body>
 </html>
-``` 
