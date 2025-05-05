@@ -1,14 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Custom Root</title>
+<head>
+    <link rel="stylesheet" href="index.css">
 </head>
-
 <body>
-    <div id="root">
-
+    <div class="container">
+        <div class="header">
+            <div class="logo">TypeFighter</div>
+            <div class="nav">
+                <div class="nav-item active">Home</div>
+                <div class="nav-item">Rankings</div>
+                <div class="nav-item">Friends</div>
+                <div class="nav-item">Records</div>
+            </div>
+            <div class="auth">
+                <div class="sign-in">Sign in</div>
+                <div class="register">Register</div>
+            </div>
+        </div>
+        <div class="main" id="root">
+        </div>
+        <div class="player-info">
+            <div class="player-name">Player1234</div>
+            <div class="player-rank">Rank #234</div>
+            <div class="stats">
+                <div class="stat">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 21.3333V16M16 10.6667H16.0134M29.3334 16C29.3334 23.3638 23.3638 29.3333 16 29.3333C8.63622 29.3333 2.66669 23.3638 2.66669 16C2.66669 8.63621 8.63622 2.66667 16 2.66667C23.3638 2.66667 29.3334 8.63621 29.3334 16Z" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="stat-info">
+                        <div class="stat-title">Accuracy</div>
+                        <div class="stat-value">100%</div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.3333 21.3333V16M16.3333 10.6667H16.3467M29.6667 16C29.6667 23.3638 23.6971 29.3333 16.3333 29.3333C8.96955 29.3333 3.00002 23.3638 3.00002 16C3.00002 8.63621 8.96955 2.66667 16.3333 2.66667C23.6971 2.66667 29.6667 8.63621 29.6667 16Z" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="stat-info">
+                        <div class="stat-title">Speed</div>
+                        <div class="stat-value">100%</div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.6666 21.3333V16M16.6666 10.6667H16.68M30 16C30 23.3638 24.0304 29.3333 16.6666 29.3333C9.30283 29.3333 3.3333 23.3638 3.3333 16C3.3333 8.63621 9.30283 2.66667 16.6666 2.66667C24.0304 2.66667 30 8.63621 30 16Z" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="stat-info">
+                        <div class="stat-title">Consistency</div>
+                        <div class="stat-value">100%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="leaderboard">
+            <div class="leaderboard-title">Leaderboard</div>
+            <div class="leaderboard-divider"></div>
+            <div class="leaderboard-list">
+                <div class="leaderboard-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 1.66667L12.575 6.88333L18.3334 7.725L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.725L7.42502 6.88333L10 1.66667Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">Player123</div>
+                        <div class="leaderboard-score">100 WPM</div>
+                    </div>
+                </div>
+                <div class="leaderboard-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 1.66666L12.575 6.88333L18.3334 7.725L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.725L7.42502 6.88333L10 1.66666Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">Player234</div>
+                        <div class="leaderboard-score">75 WPM</div>
+                    </div>
+                </div>
+                <div class="leaderboard-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 1.66667L12.575 6.88334L18.3334 7.72501L14.1667 11.7833L15.15 17.5167L10 14.8083L4.85002 17.5167L5.83335 11.7833L1.66669 7.72501L7.42502 6.88334L10 1.66667Z" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">Player345</div>
+                        <div class="leaderboard-score">50 WPM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="see-more">
+                <a class="see-more-button">See More</button>
+            </div>
+            <div class="leaderboard-divider"></div>
+            <div class="leaderboard-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 10.3333L12 2L2 10.3333M22 22L12 13.6667L2 22" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="leaderboard-info">
+                    <div class="leaderboard-name">234. You</div>
+                    <div class="leaderboard-score">35 WPM</div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div data-svg-wrapper>
+                <svg width="264" height="85" viewBox="0 0 264 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.6667 2H7.83333C6.28624 2 4.80251 2.61458 3.70854 3.70854C2.61458 4.80251 2 6.28624 2 7.83333C2 9.38043 2.61458 10.8642 3.70854 11.9581C4.80251 13.0521 6.28624 13.6667 7.83333 13.6667M13.6667 2V13.6667M13.6667 2H19.5C20.266 2 21.0246 2.15088 21.7323 2.44404C22.4401 2.73719 23.0831 3.16687 23.6248 3.70854C24.1665 4.25022 24.5961 4.89328 24.8893 5.60101C25.1824 6.30875 25.3333 7.06729 25.3333 7.83333C25.3333 8.59938 25.1824 9.35792 24.8893 10.0657C24.5961 10.7734 24.1665 11.4164 23.6248 11.9581C23.0831 12.4998 22.4401 12.9295 21.7323 13.2226C21.0246 13.5158 20.266 13.6667 19.5 13.6667M13.6667 13.6667H7.83333M13.6667 13.6667H19.5M13.6667 13.6667V25.3333M7.83333 13.6667C6.28624 13.6667 4.80251 14.2812 3.70854 15.3752C2.61458 16.4692 2 17.9529 2 19.5C2 21.0471 2.61458 22.5308 3.70854 23.6248C4.80251 24.7188 6.28624 25.3333 7.83333 25.3333M19.5 13.6667C18.734 13.6667 17.9754 13.8175 17.2677 14.1107C16.5599 14.4039 15.9169 14.8335 15.3752 15.3752C14.8335 15.9169 14.4039 16.5599 14.1107 17.2677C13.8175 17.9754 13.6667 18.734 13.6667 19.5C13.6667 20.266 13.8175 21.0246 14.1107 21.7323C14.4039 22.4401 14.8335 23.0831 15.3752 23.6248C15.9169 24.1665 16.5599 24.5961 17.2677 24.8893C17.9754 25.1824 18.734 25.3333 19.5 25.3333C20.266 25.3333 21.0246 25.1824 21.7323 24.8893C22.4401 24.5961 23.0831 24.1665 23.6248 23.6248C24.1665 23.0831 24.5961 22.4401 24.8893 21.7323C25.1824 21.0246 25.3333 20.266 25.3333 19.5C25.3333 18.734 25.1824 17.9754 24.8893 17.2677C24.5961 16.5599 24.1665 15.9169 23.6248 15.3752C23.0831 14.8335 22.4401 14.4039 21.7323 14.1107C21.0246 13.8175 20.266 13.6667 19.5 13.6667ZM7.83333 25.3333C6.28624 25.3333 4.80251 25.9479 3.70854 27.0419C2.61458 28.1358 2 29.6196 2 31.1667C2 32.7138 2.61458 34.1975 3.70854 35.2915C4.80251 36.3854 6.28624 37 7.83333 37C9.38043 37 10.8642 36.3854 11.9581 35.2915C13.0521 34.1975 13.6667 32.7138 13.6667 31.1667V25.3333M7.83333 25.3333H13.6667" stroke="#1E1E1E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.2737 71.1635L25.2023 61H23.0872L15.3313 69.823L9.14125 61H2L11.3626 74.3433L2 85H4.11504L12.3002 75.6806L18.8388 85H25.98M4.8784 62.5619H8.12769L23.0856 83.5148H19.8355" fill="#1E1E1E"/>
+                    <g clip-path="url(#clip0_8_158)">
+                    <path d="M53.98 63.163C57.184 63.163 57.564 63.175 58.83 63.233C62.082 63.381 63.601 64.924 63.749 68.152C63.807 69.417 63.818 69.797 63.818 73.001C63.818 76.206 63.806 76.585 63.749 77.85C63.6 81.075 62.085 82.621 58.83 82.769C57.564 82.827 57.186 82.839 53.98 82.839C50.776 82.839 50.396 82.827 49.131 82.769C45.871 82.62 44.36 81.07 44.212 77.849C44.154 76.584 44.142 76.205 44.142 73C44.142 69.796 44.155 69.417 44.212 68.151C44.361 64.924 45.876 63.38 49.131 63.232C50.397 63.175 50.776 63.163 53.98 63.163ZM53.98 61C50.721 61 50.313 61.014 49.033 61.072C44.675 61.272 42.253 63.69 42.053 68.052C41.994 69.333 41.98 69.741 41.98 73C41.98 76.259 41.994 76.668 42.052 77.948C42.252 82.306 44.67 84.728 49.032 84.928C50.313 84.986 50.721 85 53.98 85C57.239 85 57.648 84.986 58.928 84.928C63.282 84.728 65.71 82.31 65.907 77.948C65.966 76.668 65.98 76.259 65.98 73C65.98 69.741 65.966 69.333 65.908 68.053C65.712 63.699 63.291 61.273 58.929 61.073C57.648 61.014 57.239 61 53.98 61ZM53.98 66.838C50.577 66.838 47.818 69.597 47.818 73C47.818 76.403 50.577 79.163 53.98 79.163C57.383 79.163 60.142 76.404 60.142 73C60.142 69.597 57.383 66.838 53.98 66.838ZM53.98 77C51.771 77 49.98 75.21 49.98 73C49.98 70.791 51.771 69 53.98 69C56.189 69 57.98 70.791 57.98 73C57.98 75.21 56.189 77 53.98 77ZM60.386 65.155C59.59 65.155 58.945 65.8 58.945 66.595C58.945 67.39 59.59 68.035 60.386 68.035C61.181 68.035 61.825 67.39 61.825 66.595C61.825 65.8 61.181 65.155 60.386 65.155Z" fill="#1E1E1E"/>
+                    </g>
+                    <g clip-path="url(#clip1_8_158)">
+                    <path d="M101.595 64.184C97.991 63.938 89.964 63.939 86.365 64.184C82.468 64.45 82.009 66.804 81.98 73C82.009 79.185 82.464 81.549 86.365 81.816C89.965 82.061 97.991 82.062 101.595 81.816C105.492 81.55 105.951 79.196 105.98 73C105.951 66.815 105.496 64.451 101.595 64.184ZM90.98 77V69L98.98 72.993L90.98 77Z" fill="#1E1E1E"/>
+                    </g>
+                    <g clip-path="url(#clip2_8_158)">
+                    <path d="M140.98 61H126.98C124.219 61 121.98 63.239 121.98 66V80C121.98 82.761 124.219 85 126.98 85H140.98C143.742 85 145.98 82.761 145.98 80V66C145.98 63.239 143.742 61 140.98 61ZM129.98 80H126.98V69H129.98V80ZM128.48 67.732C127.514 67.732 126.73 66.942 126.73 65.968C126.73 64.994 127.514 64.204 128.48 64.204C129.446 64.204 130.23 64.994 130.23 65.968C130.23 66.942 129.447 67.732 128.48 67.732ZM141.98 80H138.98V74.396C138.98 71.028 134.98 71.283 134.98 74.396V80H131.98V69H134.98V70.765C136.376 68.179 141.98 67.988 141.98 73.241V80Z" fill="#1E1E1E"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_8_158">
+                    <rect width="24" height="24" fill="white" transform="translate(41.98 61)"/>
+                    </clipPath>
+                    <clipPath id="clip1_8_158">
+                    <rect width="24" height="24" fill="white" transform="translate(81.98 61)"/>
+                    </clipPath>
+                    <clipPath id="clip2_8_158">
+                    <rect width="24" height="24" fill="white" transform="translate(121.98 61)"/>
+                    </clipPath>
+                    </defs>
+                </svg>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <div class="footer-title">Use cases</div>
+                    <div class="footer-link">UI design</div>
+                    <div class="footer-link">UX design</div>
+                    <div class="footer-link">Wireframing</div>
+                    <div class="footer-link">Diagramming</div>
+                    <div class="footer-link">Brainstorming</div>
+                    <div class="footer-link">Online whiteboard</div>
+                    <div class="footer-link">Team collaboration</div>
+                </div>
+                <div class="footer-section">
+                    <div class="footer-title">Explore</div>
+                    <div class="footer-link">Design</div>
+                    <div class="footer-link">Prototyping</div>
+                    <div class="footer-link">Development features</div>
+                    <div class="footer-link">Design systems</div>
+                    <div class="footer-link">Collaboration features</div>
+                    <div class="footer-link">Design process</div>
+                    <div class="footer-link">FigJam</div>
+                </div>
+                <div class="footer-section">
+                    <div class="footer-title">Resources</div>
+                    <div class="footer-link">Blog</div>
+                    <div class="footer-link">Best practices</div>
+                    <div class="footer-link">Colors</div>
+                    <div class="footer-link">Color wheel</div>
+                    <div class="footer-link">Support</div>
+                    <div class="footer-link">Developers</div>
+                    <div class="footer-link">Resource library</div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div id="auth-popup" class="popup-overlay hidden">
+        <div class="popup">
+            <h2 id="popup-title">Sign In</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required />
+                </div>
+                <div id="confirm-password-group" class="form-group hidden">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" />
+                </div>
+                <button type="submit" class="submit-button">Sign In</button>
+            </form>
+            <button class="close-button" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    <script>
+        const popup = document.getElementById('auth-popup');
+        const popupTitle = document.getElementById('popup-title');
+        const confirmPasswordGroup = document.getElementById('confirm-password-group');
+        const submitButton = document.querySelector('.submit-button');
+
+        // Open the popup
+        function openPopup(isRegistering) {
+            popup.classList.remove('hidden');
+            if (isRegistering) {
+                popupTitle.textContent = 'Register';
+                confirmPasswordGroup.classList.remove('hidden'); // Show confirm password for registration
+                submitButton.textContent = 'Register';
+            } else {
+                popupTitle.textContent = 'Sign In';
+                confirmPasswordGroup.classList.add('hidden'); // Hide confirm password for sign-in
+                submitButton.textContent = 'Sign In';
+            }
+        }
+
+        // Close the popup
+        function closePopup() {
+            popup.classList.add('hidden');
+        }
+
+        // Attach event listeners to the "Sign in" and "Register" buttons
+        document.querySelector('.sign-in').addEventListener('click', () => openPopup(false));
+        document.querySelector('.register').addEventListener('click', () => openPopup(true));
+
+        // Handle form submission
+        document.getElementById('auth-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (popupTitle.textContent === 'Register') {
+                const confirmPassword = document.getElementById('confirm-password').value;
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+            }
+
+            alert(`${popupTitle.textContent} successful!`);
+            closePopup();
+        });
+    </script>
 </body>
 </html>
