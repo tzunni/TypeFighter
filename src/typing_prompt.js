@@ -100,10 +100,14 @@ function Typing_Test_Root({ update_book_prompt, route_home, promptId, source }) 
         // Check if the user is logged in
         fetch('/session', { method: 'GET' })
             .then(response => response.json())
-            .then(session => {
+            .then(async (session) => {
                 if (session.logged_in) {
                     const userId = session.user_id; // Retrieve user ID from session
-                    uploadRunStats(userId, wpm, finalAccuracy, promptId); // Pass the final accuracy directly
+                    await uploadRunStats(userId, wpm, finalAccuracy, promptId); // Pass the final accuracy directly
+
+                    // Attack the boss with the player's WPM
+                    const updatedBoss = await attackBoss(wpm);
+                    console.log('Boss updated after attack:', updatedBoss);
                 } else {
                     console.log('User is not logged in. Stats will not be uploaded.');
                 }
@@ -265,6 +269,27 @@ function Typing_Test_Root({ update_book_prompt, route_home, promptId, source }) 
             }
         } catch (error) {
             console.error('Error uploading run:', error);
+        }
+    }
+
+    async function attackBoss(wpm) {
+        try {
+            const response = await fetch('/boss/attack', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ wpm })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                return result;
+            } else {
+                console.error('Error attacking boss:', result.error);
+                return null;
+            }
+        } catch (error) {
+            console.error('Error attacking boss:', error);
+            return null;
         }
     }
 }

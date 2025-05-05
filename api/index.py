@@ -281,6 +281,52 @@ def get_leaderboard():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/boss', methods=['GET'])
+def get_boss():
+    boss = Boss.query.first()  # Assuming there's only one boss
+    if boss:
+        return jsonify({
+            'boss_id': boss.boss_id,
+            'boss_name': boss.boss_name,
+            'current_hp': boss.current_hp,
+            'max_hp': boss.max_hp,
+            'img_location': boss.img_location,
+            'dead': boss.dead
+        }), 200
+    else:
+        return jsonify({'error': 'Boss not found'}), 404
+
+@app.route('/boss/attack', methods=['POST'])
+def attack_boss():
+    data = request.get_json()
+    damage = data.get('damage', 0)
+
+    boss = Boss.query.first()
+    if not boss:
+        return jsonify({'error': 'Boss not found'}), 404
+
+    boss.current_hp = max(0, boss.current_hp - damage)  # Reduce HP but not below 0
+    if boss.current_hp == 0:
+        boss.dead = True  # Mark the boss as dead
+
+    db.session.commit()
+    return jsonify({
+        'boss_id': boss.boss_id,
+        'current_hp': boss.current_hp,
+        'dead': boss.dead
+    }), 200
+
+@app.route('/boss/reset', methods=['POST'])
+def reset_boss():
+    boss = Boss.query.first()
+    if not boss:
+        return jsonify({'error': 'Boss not found'}), 404
+
+    boss.current_hp = boss.max_hp
+    boss.dead = False
+    db.session.commit()
+    return jsonify({'message': 'Boss reset successfully'}), 200
+
 if __name__ == "__main__":
     with app.app_context():  # Needed for DB operations
         db.create_all()      # Creates the database and tables

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import Typing_Test_Root from './typing_prompt.js';
 import ui_handler from './web_display.js';
@@ -21,10 +21,61 @@ async function fetchRandomPrompt() {
     }
 }
 
+async function fetchBossData() {
+    try {
+        const response = await fetch('/boss', { method: 'GET' });
+        const result = await response.json();
+
+        if (response.ok) {
+            console.log('Boss Data:', result);
+            return result;
+        } else {
+            console.error('Error fetching boss data:', result.error);
+        }
+    } catch (error) {
+        console.error('Error fetching boss data:', error);
+    }
+}
+
+async function attackBoss(damage) {
+    try {
+        const response = await fetch('/boss/attack', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ damage })
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+            console.log('Boss attacked:', result);
+            return result; // Return the updated boss data
+        } else {
+            console.error('Error attacking boss:', result.error);
+        }
+    } catch (error) {
+        console.error('Error attacking boss:', error);
+    }
+}
+
 function App() {
     const [page_state, set_page_state] = useState("home");
     const [promptId, setPromptId] = useState(null); // Add state for prompt ID
     const [source, setSource] = useState(null); // Add state for source
+    const [boss, setBoss] = useState(null);
+
+    useEffect(() => {
+        async function loadBossData() {
+            const bossData = await fetchBossData();
+            setBoss(bossData);
+        }
+        loadBossData();
+    }, []);
+
+    useEffect(() => {
+        if (boss && boss.dead) {
+            console.log('The boss has been defeated!');
+        }
+    }, [boss]);
 
     const update_book_prompt = async () => {
         const response = await fetch('/random-prompt', { method: 'GET' });
@@ -49,17 +100,22 @@ function App() {
                 <div className="main_block">
                     <div className="title">TypeFighter</div>
                     <div className="subtitle">Will the boss fall today?</div>
-                    <img className="boss" src="/1200px-Bowser.webp" alt="Bowser" />
-                    <div className="hp-bar">HP: 100%</div>
-                    <button
-                        id="attack-button"
-                        onClick={() => {
-                            set_page_state("typing_test");
-                            update_book_prompt();
-                        }}
-                    >
-                        Attack!
-                    </button>
+                    {boss && (
+                        <>
+                            <img className="boss" src={boss.img_location} alt={boss.boss_name} />
+                            <div className="hp-bar">HP: {boss.current_hp}/{boss.max_hp}</div>
+                            <button
+                                id="attack-button"
+                                onClick={async () => {
+                                    const updatedBoss = await attackBoss(10); // Example: Deal 10 damage
+                                    setBoss(updatedBoss);
+                                }}
+                                disabled={boss.dead}
+                            >
+                                {boss.dead ? 'Boss Defeated!' : 'Attack!'}
+                            </button>
+                        </>
+                    )}
                 </div>
             );
             break;
