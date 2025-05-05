@@ -155,7 +155,11 @@ def create_run():
 def check_session():
     user = session.get('user')  # Check if user data exists in the session
     if user:
-        return jsonify({'logged_in': True, 'username': user['username']}), 200
+        return jsonify({
+            'logged_in': True,
+            'username': user['username'],
+            'user_id': user['user_id']
+        }), 200
     return jsonify({'logged_in': False}), 200
 
 @app.route('/logout', methods=['POST'])
