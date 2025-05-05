@@ -24,6 +24,7 @@ async function fetchRandomPrompt() {
 function App() {
     const [page_state, set_page_state] = useState("home");
     const [promptId, setPromptId] = useState(null); // Add state for prompt ID
+    const [source, setSource] = useState(null); // Add state for source
 
     const update_book_prompt = async () => {
         const response = await fetch('/random-prompt', { method: 'GET' });
@@ -32,6 +33,7 @@ function App() {
         if (response.ok) {
             console.log('Random Prompt:', result);
             setPromptId(result.id); // Store the prompt ID
+            setSource(result.source); // Store the source
             document.getElementById('prompt_display_box').textContent = result.prompt;
         } else {
             console.error('Error fetching random prompt:', result.error);
@@ -67,6 +69,7 @@ function App() {
                     update_book_prompt={update_book_prompt}
                     route_home={() => set_page_state("home")}
                     promptId={promptId} // Pass the prompt ID to the component
+                    source={source} // Pass the source to the component
                 />
             );
             break;

@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from 'react';
 
 // React Component
-function Typing_Test_Root({ update_book_prompt, route_home, promptId }) {
+function Typing_Test_Root({ update_book_prompt, route_home, promptId, source }) {
     const [page_state, set_page_state] = useState("typing_test");
     const valid_states = ["typing_test", "results"];
     let current_page;
@@ -67,6 +67,7 @@ function Typing_Test_Root({ update_book_prompt, route_home, promptId }) {
                     <p>Final WPM: {wpm}</p>
                     <p>Accuracy: {accuracy}%</p>
                     <p>Total Mistakes: {mistakes} incorrect characters</p>
+                    <p>Prompt: {source}</p>
                     <button onClick={retake_test}>Retake Test</button>
                     <button onClick={route_home}>Return Home</button>
                 </div>
