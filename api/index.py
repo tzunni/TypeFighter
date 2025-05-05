@@ -50,6 +50,38 @@ class stat_cache(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     speed_mean = db.Column(db.Integer, nullable=False)
     accuracy_mean = db.Column(db.Integer, nullable=False)
+    
+@app.route('/register', methods=['POST'])
+def register_user():
+    data = request.get_json()
+    if not data or not all(key in data for key in ('user_name', 'email', 'password')):
+        return jsonify({'error': 'Missing data'}), 400
+
+    # Check if the email is already registered
+    if Users.query.filter_by(email=data['email']).first():
+        return jsonify({'error': 'Email already registered'}), 400
+
+    new_user = Users(
+        user_name=data['user_name'],
+        pw_hash=data['password'],  # In production, hash the password using a library like bcrypt
+        email=data['email']
+    )
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    data = request.get_json()
+    if not data or not all(key in data for key in ('email', 'password')):
+        return jsonify({'error': 'Missing data'}), 400
+
+    user = Users.query.filter_by(email=data['email']).first()
+    if user and user.pw_hash == data['password']:  # In production, compare hashed passwords
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid email or password'}), 401
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):

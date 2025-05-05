@@ -211,7 +211,7 @@
         document.querySelector('.register').addEventListener('click', () => openPopup(true));
 
         // Handle form submission
-        document.getElementById('auth-form').addEventListener('submit', (e) => {
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -222,10 +222,36 @@
                     alert('Passwords do not match!');
                     return;
                 }
-            }
 
-            alert(`${popupTitle.textContent} successful!`);
-            closePopup();
+                const userName = prompt('Enter your username:');
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_name: userName, email, password })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    closePopup();
+                } else {
+                    alert(result.error);
+                }
+            } else {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    closePopup();
+                } else {
+                    alert(result.error);
+                }
+            }
         });
     </script>
 </body>
