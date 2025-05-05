@@ -169,6 +169,10 @@
                     <input type="email" id="email" placeholder="Enter your email" required />
                 </div>
                 <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="username" id="username" placeholder="Enter your username" required />
+              </div>
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="Enter your password" required />
                 </div>
@@ -214,6 +218,7 @@
         document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             if (popupTitle.textContent === 'Register') {
@@ -223,11 +228,10 @@
                     return;
                 }
 
-                const userName = prompt('Enter your username:');
                 const response = await fetch('/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_name: userName, email, password })
+                    body: JSON.stringify({ username, email, password })
                 });
 
                 const result = await response.json();
