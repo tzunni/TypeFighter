@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from 'react';
 
 // React Component
-function Typing_Test_Root({ update_book_prompt, route_home }){
+function Typing_Test_Root({ update_book_prompt, route_home, promptId }) {
     const [page_state, set_page_state] = useState("typing_test");
     const valid_states = ["typing_test", "results"];
     let current_page;
@@ -29,7 +29,7 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
 
     useEffect(() => {
         let interval = null;
-        if (isTimerOn){
+        if (isTimerOn) {
             interval = setInterval(() => {
                 set_timer_state((previous_time) => previous_time + 1)
             }, (base_sampling_rate / timer_frequency_modulator)) // 1000 ms / tfm value
@@ -44,32 +44,32 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
     }, [isTimerOn]);
 
     // State Handler
-    switch(page_state){
+    switch (page_state) {
         case "typing_test":
             current_page = (
-            <div>
-                <p id="prompt_display_box"> Loading Prompt... </p>
+                <div>
+                    <p id="prompt_display_box"> Loading Prompt... </p>
 
-                <input type="text"
-                    id="prompt_input_box"
-                    placeholder="Type the prompt displayed here."
-                    onChange={update_score}
-                    onPaste={(e) => e.preventDefault()}
-                />
-                <p>Speed: {wpm}</p>
-            </div>
+                    <input type="text"
+                        id="prompt_input_box"
+                        placeholder="Type the prompt displayed here."
+                        onChange={update_score}
+                        onPaste={(e) => e.preventDefault()}
+                    />
+                    <p>Speed: {wpm}</p>
+                </div>
             );
             break
         case "results":
             current_page = (
-            <div>
-                <p>Total Time Elapsed: {total_seconds_elapsed} seconds</p>
-                <p>Final WPM: {wpm}</p>
-                <p>Accuracy: {accuracy}%</p>
-                <p>Total Mistakes: {mistakes} incorrect characters</p>
-                <button onClick={retake_test}>Retake Test</button>
-                <button onClick={route_home}>Return Home</button>
-            </div>
+                <div>
+                    <p>Total Time Elapsed: {total_seconds_elapsed} seconds</p>
+                    <p>Final WPM: {wpm}</p>
+                    <p>Accuracy: {accuracy}%</p>
+                    <p>Total Mistakes: {mistakes} incorrect characters</p>
+                    <button onClick={retake_test}>Retake Test</button>
+                    <button onClick={route_home}>Return Home</button>
+                </div>
             );
             break;
 
@@ -84,7 +84,7 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         </div>
     ); // Return HTML tags
 
-    function start_typing_test(){
+    function start_typing_test() {
         set_timer_on(true);
         set_accuracy(0)
     }
@@ -98,9 +98,8 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
             .then(response => response.json())
             .then(session => {
                 if (session.logged_in) {
-                    const userId = session.user_id; // Assuming session includes user_id
-                    const promptId = 1; // Replace with the actual prompt ID
-                    uploadRunStats(userId, wpm, accuracy, promptId);
+                    const userId = session.user_id; // Retrieve user ID from session
+                    uploadRunStats(userId, wpm, accuracy, promptId); // Use the actual prompt ID
                 } else {
                     console.log('User is not logged in. Stats will not be uploaded.');
                 }
@@ -109,8 +108,8 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
     }
 
     // Update WPM, only when user input is correct
-    function update_wpm(user_input){
-        if (timer_state > (2 * timer_frequency_modulator)){
+    function update_wpm(user_input) {
+        if (timer_state > (2 * timer_frequency_modulator)) {
             const input_word_list = user_input.trimEnd().split(" ")
             const prompt_word_list = book_prompt.split(" ")
             const last_word_index = input_word_list.length - 1
@@ -131,20 +130,20 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         const user_input = event.target.value;
 
         // Lock Data after a correct prompt, ignore any new typed characters
-        if (isPromptMatch){
+        if (isPromptMatch) {
             return
         }
 
         // Set book_prompt (run once)
-        if (book_prompt == "NA"){
+        if (book_prompt == "NA") {
             // To Do: Relocate setting book_prompt from update_score into the API call with useEffect or other...
             const new_book_prompt = document.getElementById("prompt_display_box").innerHTML
             set_book_prompt(new_book_prompt)
             start_typing_test()
 
             // Calculate accuracy
-            if (user_input.length == 1){
-                if (new_book_prompt[0] == user_input){
+            if (user_input.length == 1) {
+                if (new_book_prompt[0] == user_input) {
                     set_accuracy(100)
                 }
                 else {
@@ -154,7 +153,7 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
                     set_mistakes(mistakes + 1)
                 }
             }
-            else{
+            else {
                 set_accuracy(0)
             }
             return
@@ -162,7 +161,7 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
 
         // Calculate Accuracy
         // -> Check win before calculating accuracy
-        if (user_input == book_prompt){
+        if (user_input == book_prompt) {
             document.getElementById("prompt_display_box").style.color = "green"
             console.log("Match!")
 
@@ -173,13 +172,13 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         }
 
         // -> Case: user backtracks
-        if (mistakes == 0 && user_input.length == 0){
+        if (mistakes == 0 && user_input.length == 0) {
             set_accuracy(100)
             return
         }
 
         // -> Case: new character (not match)
-        if (!book_prompt.startsWith(user_input)){
+        if (!book_prompt.startsWith(user_input)) {
             const total_characters = book_prompt.length
             const new_accuracy = Math.floor(100 * total_characters / (total_characters + mistakes + 1))
             set_accuracy(new_accuracy)
@@ -205,28 +204,28 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         console.log("CI: " + user_input + " | book_prompt: " + book_prompt)
     }
 
-    function convert_current_timer_to_minutes_elapsed(timer_state){
+    function convert_current_timer_to_minutes_elapsed(timer_state) {
         // Note: Do not use for "real measurements" since 60 seconds in a minute make calculations difficult / prone to error
         const _initial_rounding_decimal_places = 3
-        let _rounding_constant = 10**(_initial_rounding_decimal_places)
+        let _rounding_constant = 10 ** (_initial_rounding_decimal_places)
         const minutes_elapsed = Math.round((timer_state / (60 * timer_frequency_modulator)) * _rounding_constant) / _rounding_constant // Round to THREE Decimal places
         return minutes_elapsed;
     }
 
-    function update_total_seconds_elapsed(timer_state){
+    function update_total_seconds_elapsed(timer_state) {
         // Note: conversion exists due to base 60 unit of time for minutes vs the base 10 standard for seconds/ms with the base_sampling_rate and tfm
         let total_ms_elapsed = timer_state * (base_sampling_rate / timer_frequency_modulator); // ms = samples * sampling ratio
         let total_seconds_passed = Number(total_ms_elapsed / 1000).toFixed(2);
         set_total_seconds_elapsed(total_seconds_passed);
     }
 
-    function retake_test(){
+    function retake_test() {
         reset_states()
         set_page_state("typing_test")
         update_book_prompt()
     }
 
-    function reset_states(){
+    function reset_states() {
         set_total_seconds_elapsed(0.0)
         set_book_prompt("NA")
         set_wpm('?')
@@ -234,7 +233,7 @@ function Typing_Test_Root({ update_book_prompt, route_home }){
         set_mistakes(0)
         set_match_flag(false)
     }
-    
+
     async function uploadRunStats(userId, wpm, accuracy, promptId) {
         try {
             const runData = {
