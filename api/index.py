@@ -12,10 +12,11 @@ db = SQLAlchemy(app)
 
 # Define our database models
 class Users(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Add autoincrement=True
     user_name = db.Column(db.String(20), unique=False, nullable=False)
     pw_hash = db.Column(db.String(20), unique=False, nullable=False)
     email = db.Column(db.String(20), unique=False, nullable=False)
+
     def __repr__(self):
         return f'<User {self.user_name}>'
 
