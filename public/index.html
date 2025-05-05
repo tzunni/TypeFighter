@@ -164,6 +164,10 @@
         <div class="popup">
             <h2 id="popup-title">Sign In</h2>
             <form id="auth-form">
+                <div id="username-group" class="form-group hidden">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" />
+                </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" placeholder="Enter your email" required />
@@ -184,6 +188,7 @@
     <script>
         const popup = document.getElementById('auth-popup');
         const popupTitle = document.getElementById('popup-title');
+        const usernameGroup = document.getElementById('username-group');
         const confirmPasswordGroup = document.getElementById('confirm-password-group');
         const submitButton = document.querySelector('.submit-button');
 
@@ -192,10 +197,12 @@
             popup.classList.remove('hidden');
             if (isRegistering) {
                 popupTitle.textContent = 'Register';
+                usernameGroup.classList.remove('hidden'); // Show username field for registration
                 confirmPasswordGroup.classList.remove('hidden'); // Show confirm password for registration
                 submitButton.textContent = 'Register';
             } else {
                 popupTitle.textContent = 'Sign In';
+                usernameGroup.classList.add('hidden'); // Hide username field for sign-in
                 confirmPasswordGroup.classList.add('hidden'); // Hide confirm password for sign-in
                 submitButton.textContent = 'Sign In';
             }
@@ -213,6 +220,7 @@
         // Handle form submission
         document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const user_name = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
@@ -223,11 +231,10 @@
                     return;
                 }
 
-                const userName = prompt('Enter your username:');
                 const response = await fetch('/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_name: userName, email, password })
+                    body: JSON.stringify({ user_name, email, password })
                 });
 
                 const result = await response.json();
