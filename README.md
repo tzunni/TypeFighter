@@ -66,9 +66,9 @@ npm view react version
 npm run start-api
 ```
 
-**3. Create browser instance**
+**3. Create browser instance (Windows)**
 ```powershell
-npm start
+npm run start
 ```
 
 **4. Run Flask instance (Windows) in debug-mode**
